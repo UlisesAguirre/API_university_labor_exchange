@@ -15,8 +15,6 @@ public partial class Career
 
     public int TotalSubjets { get; set; }
 
-    public string? StudyProgram { get; set; }
-
     public virtual ICollection<JobPositionsCareer> JobPositionsCareers { get; set; } = new List<JobPositionsCareer>();
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();

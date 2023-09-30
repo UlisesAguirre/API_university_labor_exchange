@@ -1,4 +1,3 @@
-using API_university_labor_exchange.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -8,6 +7,7 @@ using API_university_labor_exchange.Services.Interfaces;
 using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Data.Implementations;
+using API_university_labor_exchange.DBContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
