@@ -11,7 +11,7 @@ public partial class Career
 
     public string? Abbreviation { get; set; }
 
-    public string? CareerType { get; set; }
+    public CareerType? CareerType { get; set; }
 
     public int TotalSubjets { get; set; }
 

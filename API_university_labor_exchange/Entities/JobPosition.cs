@@ -17,7 +17,7 @@ public partial class JobPosition
 
     public int? PositionToCover { get; set; }
 
-    public string? JobType { get; set; }
+    public JobType? JobType { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
@@ -27,7 +27,7 @@ public partial class JobPosition
 
     public int? NumberOfPositionsToCover { get; set; }
 
-    public string? WorkDay { get; set; }
+    public WorkDay? WorkDay { get; set; }
 
     public int? InternshipDuration { get; set; }
 

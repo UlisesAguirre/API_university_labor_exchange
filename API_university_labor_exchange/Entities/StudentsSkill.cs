@@ -11,7 +11,7 @@ public partial class StudentsSkill
 
     public int IdSkill { get; set; }
 
-    public string? SkillLevel { get; set; }
+    public SkillLevel? SkillLevel { get; set; }
 
     public virtual Skill IdSkillNavigation { get; set; } = null!;
 

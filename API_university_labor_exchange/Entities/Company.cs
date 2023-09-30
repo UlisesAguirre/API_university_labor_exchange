@@ -33,7 +33,7 @@ public partial class Company
 
     public string? RecruiterEmail { get; set; }
 
-    public string? RecruiterRelWithCompany { get; set; }
+    public RecruiterRelWithCompany? RecruiterRelWithCompany { get; set; }
 
     public int IdUser { get; set; }
 

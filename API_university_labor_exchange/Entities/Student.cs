@@ -7,7 +7,7 @@ public partial class Student
 {
     public string Legajo { get; set; } = null!;
 
-    public string? DocumentType { get; set; }
+    public DocumentType? DocumentType { get; set; }
 
     public string? DocumentNumber { get; set; }
 
@@ -17,11 +17,11 @@ public partial class Student
 
     public DateTime? BirthDate { get; set; }
 
-    public string? CivilStatus { get; set; }
+    public CivilStatus? CivilStatus { get; set; }
 
     public string? Cuil { get; set; }
 
-    public string? Sex { get; set; }
+    public Sex? Sex { get; set; }
 
     public string? Address { get; set; }
 
@@ -51,7 +51,7 @@ public partial class Student
 
     public int? CurrentCareerYear { get; set; }
 
-    public string? Turn { get; set; }
+    public Turn? Turn { get; set; }
 
     public double? Average { get; set; }
 
