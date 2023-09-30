@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace API_university_labor_exchange.Models;
+namespace API_university_labor_exchange.Entities;
 
 public partial class JobPositionsCareer
 {

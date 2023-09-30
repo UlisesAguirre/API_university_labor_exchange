@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace API_university_labor_exchange.Models;
+namespace API_university_labor_exchange.Entities;
 
 public partial class UniversityLaborExchangeContext : DbContext
 {
