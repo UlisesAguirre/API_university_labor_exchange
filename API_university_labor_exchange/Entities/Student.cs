@@ -21,7 +21,7 @@ public partial class Student
 
     public string? Cuil { get; set; }
 
-    public string? Sex { get; set; }
+    public Sex? Sex { get; set; }
 
     public string? Address { get; set; }
 
