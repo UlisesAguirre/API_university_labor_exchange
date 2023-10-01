@@ -11,11 +11,9 @@ public partial class Career
 
     public string? Abbreviation { get; set; }
 
-    public string? CareerType { get; set; }
+    public CareerType? CareerType { get; set; }
 
     public int TotalSubjets { get; set; }
-
-    public string? StudyProgram { get; set; }
 
     public virtual ICollection<JobPositionsCareer> JobPositionsCareers { get; set; } = new List<JobPositionsCareer>();
 

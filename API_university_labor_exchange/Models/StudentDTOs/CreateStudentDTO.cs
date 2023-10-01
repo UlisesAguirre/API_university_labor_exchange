@@ -1,6 +1,6 @@
-﻿namespace API_university_labor_exchange.Models
+﻿namespace API_university_labor_exchange.Models.StudentDTOs
 {
-    public class CreateStudentDTO 
+    public class CreateStudentDTO
     {
         public string Legajo { get; set; }
         public string Name { get; set; }

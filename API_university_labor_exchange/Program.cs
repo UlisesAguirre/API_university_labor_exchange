@@ -1,13 +1,13 @@
-using API_university_labor_exchange.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using API_university_labor_exchange.Services.Interfaces;
 using API_university_labor_exchange.Services.Implementations;
-using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Data.Implementations;
+using API_university_labor_exchange.DBContext;
+using API_university_labor_exchange.Data.Interfaces;
+using API_university_labor_exchange.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,10 +64,13 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
 //Add services - 
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ICareerService, CareerService>();
 
 //Add repositories -
 
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<ICareerRepository, CareerRepository>();
 
 //Add automapper - 
 

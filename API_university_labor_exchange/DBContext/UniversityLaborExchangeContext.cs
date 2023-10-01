@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using API_university_labor_exchange.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace API_university_labor_exchange.Entities;
+namespace API_university_labor_exchange.DBContext;
 
 public partial class UniversityLaborExchangeContext : DbContext
 {
-    public UniversityLaborExchangeContext()
-    {
-    }
+    public UniversityLaborExchangeContext() {}
 
-    public UniversityLaborExchangeContext(DbContextOptions<UniversityLaborExchangeContext> options)
-        : base(options)
-    {
-    }
+    public UniversityLaborExchangeContext(DbContextOptions<UniversityLaborExchangeContext> options) : base(options) {}
 
     public virtual DbSet<Career> Careers { get; set; }
 
@@ -35,9 +31,6 @@ public partial class UniversityLaborExchangeContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-RCO83TL;Database=university_labor_exchange;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,17 +38,15 @@ public partial class UniversityLaborExchangeContext : DbContext
         {
             entity.HasKey(e => e.IdCarrer);
 
-            entity.Property(e => e.IdCarrer).ValueGeneratedNever();
             entity.Property(e => e.Abbreviation)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.CareerType)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (CareerType)Enum.Parse(typeof(CareerType), v));
+            
             entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.StudyProgram)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
@@ -96,7 +87,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.RecruiterRelWithCompany)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (RecruiterRelWithCompany)Enum.Parse(typeof(RecruiterRelWithCompany), v));
             entity.Property(e => e.Sector)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -120,7 +112,6 @@ public partial class UniversityLaborExchangeContext : DbContext
         {
             entity.HasKey(e => e.IdJobPosition);
 
-            entity.Property(e => e.IdJobPosition).ValueGeneratedNever();
             entity.Property(e => e.BenefitsOfferedDetail)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -140,7 +131,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.JobType)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (JobType)Enum.Parse(typeof(JobType), v)); 
             entity.Property(e => e.Location)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -148,7 +140,8 @@ public partial class UniversityLaborExchangeContext : DbContext
             entity.Property(e => e.TentativeStartDate).HasColumnType("date");
             entity.Property(e => e.WorkDay)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (WorkDay)Enum.Parse(typeof(WorkDay), v)); ;
 
             entity.HasOne(d => d.IdCompanyNavigation).WithMany(p => p.JobPositions)
                 .HasForeignKey(d => d.IdCompany)
@@ -162,9 +155,7 @@ public partial class UniversityLaborExchangeContext : DbContext
 
             entity.ToTable("JobPositions_careers");
 
-            entity.Property(e => e.IdJobPositionsCareers)
-                .ValueGeneratedNever()
-                .HasColumnName("Id_jobPositions_careers");
+            entity.Property(e => e.IdJobPositionsCareers).HasColumnName("Id_jobPositions_careers");
 
             entity.HasOne(d => d.IdCareerNavigation).WithMany(p => p.JobPositionsCareers)
                 .HasForeignKey(d => d.IdCareer)
@@ -183,9 +174,7 @@ public partial class UniversityLaborExchangeContext : DbContext
 
             entity.ToTable("JobPostions_skills");
 
-            entity.Property(e => e.IdJobPositionsSkills)
-                .ValueGeneratedNever()
-                .HasColumnName("Id_jobPositions_skills");
+            entity.Property(e => e.IdJobPositionsSkills).HasColumnName("Id_jobPositions_skills");
             entity.Property(e => e.SkillLevel)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -205,7 +194,6 @@ public partial class UniversityLaborExchangeContext : DbContext
         {
             entity.HasKey(e => e.IdSkill);
 
-            entity.Property(e => e.IdSkill).ValueGeneratedNever();
             entity.Property(e => e.SkillName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -227,7 +215,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.CivilStatus)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (CivilStatus)Enum.Parse(typeof(CivilStatus), v));
             entity.Property(e => e.Country)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -239,7 +228,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.DocumentType)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (DocumentType)Enum.Parse(typeof(DocumentType), v)); 
             entity.Property(e => e.Flat)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -266,7 +256,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.Sex)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasConversion(v => v.ToString(), v => (Sex)Enum.Parse(typeof(Sex), v)); ;
             entity.Property(e => e.StudyProgram)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -275,7 +266,8 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.Turn)
                 .HasMaxLength(50)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                 .HasConversion(v => v.ToString(), v => (Turn)Enum.Parse(typeof(Turn), v)); 
 
             entity.HasOne(d => d.IdCarrerNavigation).WithMany(p => p.Students)
                 .HasForeignKey(d => d.IdCarrer)
@@ -294,9 +286,7 @@ public partial class UniversityLaborExchangeContext : DbContext
 
             entity.ToTable("Students_jobPositions");
 
-            entity.Property(e => e.IdStudentJobPosition)
-                .ValueGeneratedNever()
-                .HasColumnName("IdStudent_JobPosition");
+            entity.Property(e => e.IdStudentJobPosition).HasColumnName("IdStudent_JobPosition");
             entity.Property(e => e.Legajo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -318,9 +308,7 @@ public partial class UniversityLaborExchangeContext : DbContext
 
             entity.ToTable("Students_skills");
 
-            entity.Property(e => e.IdStudentsSkills)
-                .ValueGeneratedNever()
-                .HasColumnName("Id_students_skills");
+            entity.Property(e => e.IdStudentsSkills).HasColumnName("Id_students_skills");
             entity.Property(e => e.Legajo)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -344,7 +332,6 @@ public partial class UniversityLaborExchangeContext : DbContext
         {
             entity.HasKey(e => e.IdUser).HasName("PK_Users_1");
 
-            entity.Property(e => e.IdUser).ValueGeneratedNever();
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false);

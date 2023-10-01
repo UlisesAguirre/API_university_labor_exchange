@@ -1,16 +1,15 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
+using API_university_labor_exchange.DBContext;
 using API_university_labor_exchange.Entities;
 
 namespace API_university_labor_exchange.Data.Implementations
 {
-    public class RegisterRepository : IRegisterRepository
+    public class RegisterRepository : Repository, IRegisterRepository
     {
-        private readonly UniversityLaborExchangeContext _context;
 
-        public RegisterRepository( UniversityLaborExchangeContext context)
-        {
-            _context = context;
-        }
+
+        public RegisterRepository (UniversityLaborExchangeContext context) : base(context) { }
+
 
         public bool CreateStudent (User userData, Student studentData)
         {
