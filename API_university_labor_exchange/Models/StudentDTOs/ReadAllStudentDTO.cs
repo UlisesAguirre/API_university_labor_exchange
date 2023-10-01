@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
-    public class UpdateStudentDTO
+    public class ReadAllStudentDTO
     {
-
+        public string Legajo { get; set; } = null!;
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public DocumentType? DocumentType { get; set; }
 
@@ -15,14 +15,12 @@ namespace API_university_labor_exchange.Models.Student
 
         public string LastName { get; set; } = null!;
 
-
         public DateTime? BirthDate { get; set; }
-
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public CivilStatus? CivilStatus { get; set; }
 
         public string? Cuil { get; set; }
-
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Sex? Sex { get; set; }
 
         public string? Address { get; set; }
@@ -52,7 +50,7 @@ namespace API_university_labor_exchange.Models.Student
         public string? StudyProgram { get; set; }
 
         public int? CurrentCareerYear { get; set; }
-
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Turn? Turn { get; set; }
 
         public double? Average { get; set; }
@@ -65,8 +63,9 @@ namespace API_university_labor_exchange.Models.Student
 
         public int IdUser { get; set; }
 
-        public int IdCarrer { get; set; }
+        public string? CareerName { get; set; }
 
-        public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
+        public List<int> SkillId { get; set; }
+
     }
 }

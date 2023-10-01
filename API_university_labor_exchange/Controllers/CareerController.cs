@@ -23,7 +23,7 @@ namespace API_university_labor_exchange.Controllers
             return Ok(careers);
         }
 
-        [HttpGet("{careerId}", Name = "GetCareer")]
+        [HttpGet("GetCareer")]
         public ActionResult<ReadCareerDTO> GetCareer(int careerId) 
         {
             var career = _careerService.GetCareerById(careerId);
