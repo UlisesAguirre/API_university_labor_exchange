@@ -1,11 +1,12 @@
 ﻿using API_university_labor_exchange.Entities;
+using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
     public class UpdateStudentDTO
     {
-        public string Legajo { get; set; } = null!;
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public DocumentType? DocumentType { get; set; }
 
         public string? DocumentNumber { get; set; }
@@ -14,8 +15,10 @@ namespace API_university_labor_exchange.Models.Student
 
         public string LastName { get; set; } = null!;
 
+
         public DateTime? BirthDate { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CivilStatus? CivilStatus { get; set; }
 
         public string? Cuil { get; set; }
