@@ -2,7 +2,7 @@
 
 namespace API_university_labor_exchange.Models.Student
 {
-    public class UpdateStudentDTO
+    public class ReadAllStudentDTO
     {
         public string Legajo { get; set; } = null!;
 
@@ -62,7 +62,7 @@ namespace API_university_labor_exchange.Models.Student
 
         public int IdUser { get; set; }
 
-        public int IdCarrer { get; set; }
+        public string? CareerName { get; set; }
 
         public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
     }
