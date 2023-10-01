@@ -36,6 +36,5 @@ namespace API_university_labor_exchange.Models.Company
 
         public int IdUser { get; set; }
 
-        public virtual ICollection<JobPosition> JobPositions { get; set; } = new List<JobPosition>();
     }
 }

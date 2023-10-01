@@ -77,8 +77,8 @@ builder.Services.AddScoped<IRegisterRepository, RegisterRepository>();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<ICareerRepository, CareerRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
-//builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-//builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 
 //Add automapper - 
