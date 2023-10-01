@@ -65,12 +65,19 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ICareerService, CareerService>();
+builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 //Add repositories -
 
 builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<ICareerRepository, CareerRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+//builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+//builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
 
 //Add automapper - 
 
