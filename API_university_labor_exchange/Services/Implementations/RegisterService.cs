@@ -1,5 +1,6 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 
@@ -35,6 +36,29 @@ namespace API_university_labor_exchange.Services.Implementations
             bool newStudent = _registerRepository.CreateStudent(userData, StudentData);
 
             return newStudent;
+
+        }
+
+        public bool CreateCompany(CreateCompanyDTO company)
+        {
+
+            User userData = new User
+            {
+                Email = company.Email,
+                Username = company.SocialReason,
+                Password = company.Password, //Aca habria que hacer logica para hashear el password
+                UserType = "company"
+            };
+
+            Company companyData = new Company
+            {
+                SocialReason = company.SocialReason,
+                Cuit = company.Cuit,
+            };
+
+            bool newCompany = _registerRepository.CreateCompany(userData, companyData);
+
+            return newCompany;
 
         }
     }
