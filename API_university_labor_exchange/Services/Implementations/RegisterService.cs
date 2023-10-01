@@ -30,7 +30,6 @@ namespace API_university_labor_exchange.Services.Implementations
                 Name = student.Name,
                 LastName = student.LastName,
                 Legajo = student.Legajo,
-                IdCarrer = -1
             };
 
             bool newStudent = _registerRepository.CreateStudent(userData, StudentData);

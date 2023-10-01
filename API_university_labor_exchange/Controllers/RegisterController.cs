@@ -8,7 +8,6 @@ namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
 
     public class RegisterController : Controller
     {
@@ -18,7 +17,7 @@ namespace API_university_labor_exchange.Controllers
             _registerService = registerService;
         }
 
-        [HttpGet("RegisterStudent")]
+        [HttpPost("RegisterStudent")]
         public ActionResult<bool> CreateStudent(CreateStudentDTO student)
         {
             bool newStudent = _registerService.CreateStudent(student);
