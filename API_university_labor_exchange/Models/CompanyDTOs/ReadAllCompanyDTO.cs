@@ -1,6 +1,8 @@
-﻿namespace API_university_labor_exchange.Models.Company
+﻿using API_university_labor_exchange.Entities;
+
+namespace API_university_labor_exchange.Models.Company
 {
-    public class UpdateCompanyDTO
+    public class ReadAllCompanyDTO
     {
         public string? CompanyName { get; set; }
 
@@ -33,5 +35,6 @@
         public RecruiterRelWithCompany? RecruiterRelWithCompany { get; set; }
 
         public int IdUser { get; set; }
+
     }
 }

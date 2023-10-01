@@ -13,7 +13,5 @@ namespace API_university_labor_exchange.Models.CareerDTOs
         public CareerType CareerType { get; set; }
 
         public int TotalSubjets { get; set; }
-
-        public string StudyProgram { get; set; }
     }
 }
