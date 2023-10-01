@@ -1,6 +1,6 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
-using API_university_labor_exchange.Models;
+using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 
 namespace API_university_labor_exchange.Services.Implementations

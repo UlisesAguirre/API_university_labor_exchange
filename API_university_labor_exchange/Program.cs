@@ -3,11 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using API_university_labor_exchange.Services.Interfaces;
 using API_university_labor_exchange.Services.Implementations;
-using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Data.Implementations;
 using API_university_labor_exchange.DBContext;
+using API_university_labor_exchange.Data.Interfaces;
+using API_university_labor_exchange.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

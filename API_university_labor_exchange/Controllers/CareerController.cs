@@ -36,11 +36,8 @@ namespace API_university_labor_exchange.Controllers
         [HttpPost ("CreateCareer")] 
         public ActionResult AddCareer (CreateCareerDTO career)
         {
-            var newCareer = _careerService.AddCareer(career);
-
-            if(newCareer == null) 
-                return BadRequest();
-            return CreatedAtRoute("GetCareer", new {careerId = newCareer.IdCarrer}, newCareer);
+            _careerService.AddCareer(career);
+            return Ok("Carrera cargada con exito");
         }
 
     }
