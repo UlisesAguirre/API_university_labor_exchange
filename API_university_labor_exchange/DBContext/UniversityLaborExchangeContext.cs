@@ -258,9 +258,6 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasConversion(v => v.ToString(), v => (Sex)Enum.Parse(typeof(Sex), v)); ;
-            entity.Property(e => e.StudyProgram)
-                .HasMaxLength(50)
-                .IsUnicode(false);
             entity.Property(e => e.TelephoneNumber)
                 .HasMaxLength(50)
                 .IsUnicode(false);

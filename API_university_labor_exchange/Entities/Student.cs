@@ -47,8 +47,6 @@ public partial class Student
 
     public int? ApprovedSubjects { get; set; }
 
-    public string? StudyProgram { get; set; }
-
     public int? CurrentCareerYear { get; set; }
 
     public Turn? Turn { get; set; }
@@ -63,7 +61,7 @@ public partial class Student
 
     public int IdUser { get; set; }
 
-    public int IdCarrer { get; set; }
+    public int? IdCarrer { get; set; }
 
     public virtual Career IdCarrerNavigation { get; set; } = null!;
 
