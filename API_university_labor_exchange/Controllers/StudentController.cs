@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Models.Student;
+using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,11 @@ namespace API_university_labor_exchange.Controllers
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-       private readonly IStudentService _studentService;
-       public StudentController(IStudentService studentService) 
-       {
+        private readonly IStudentService _studentService;
+        public StudentController(IStudentService studentService)
+        {
             _studentService = studentService;
-       }
+        }
 
         [HttpGet("GetAllStudents")]
         public ActionResult<ICollection<ReadAllStudentDTO>> GetAllStudents()
@@ -28,6 +29,19 @@ namespace API_university_labor_exchange.Controllers
             if (student == null)
                 return NotFound();
             return Ok(student);
+        }
+
+        [HttpGet("GetStudentProfile/{id}")]
+
+        public ActionResult<ReadProfileStudentDTO> GetProfileStudent([FromRoute]int id)
+        {
+            ReadProfileStudentDTO studentProfile = _studentService.GetProfile(id);
+            if (studentProfile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(studentProfile);
         }
 
 
