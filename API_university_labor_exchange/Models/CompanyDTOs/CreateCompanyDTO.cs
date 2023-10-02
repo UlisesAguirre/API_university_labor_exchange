@@ -2,5 +2,12 @@
 {
     public class CreateCompanyDTO
     {
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string Cuit { get; set; }
+
+        public string SocialReason { get; set; }
     }
 }

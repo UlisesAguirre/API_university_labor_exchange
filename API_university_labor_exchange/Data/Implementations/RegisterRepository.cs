@@ -50,5 +50,45 @@ namespace API_university_labor_exchange.Data.Implementations
             }
 
         }
+
+        public bool CreateCompany(User userData, Company companyData)
+        {
+            Company company = _context.Companies.FirstOrDefault(c => c.Cuit == companyData.Cuit);
+
+            User user = _context.Users.FirstOrDefault(u => u.Email == userData.Email);
+
+
+
+            if (company == null)
+            {
+                if (user == null)
+                {
+                    _context.Users.Add(userData);
+                    _context.SaveChanges();
+
+                    int userId = userData.IdUser;
+
+                    companyData.IdUser = userId;
+
+                    _context.Companies.Add(companyData);
+                    _context.SaveChanges();
+
+                    return true;
+
+                }
+                else
+                {
+                    //Ver como hacer el manejo de errores, en caso de que exista ya un usuario con el mismo legajo
+                    //o con el mismo email
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

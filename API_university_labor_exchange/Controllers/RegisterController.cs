@@ -1,4 +1,5 @@
-﻿using API_university_labor_exchange.Models.StudentDTOs;
+﻿using API_university_labor_exchange.Models.Company;
+using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,20 @@ namespace API_university_labor_exchange.Controllers
 
             if (newStudent == true)
             {
-                return Ok();
+                return Ok(new { message = "Ok" });
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("RegisterCompany")]
+        public ActionResult<bool> CreateCompany(CreateCompanyDTO company)
+        {
+            bool newCompany = _registerService.CreateCompany(company);
+
+            if (newCompany == true)
+            {
+                return Ok(new { message = "Ok" });
             }
 
             return BadRequest();

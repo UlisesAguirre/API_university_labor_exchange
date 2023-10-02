@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Models.Company;
+using API_university_labor_exchange.Models.CompanyDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -43,6 +44,19 @@ namespace API_university_labor_exchange.Controllers
             _companyService.UpdateCompany(company, companyId);
             return Ok("Compañia actualizada con exito");
             
+        }
+
+        [HttpGet("GetCompanyProfile/{id}")]
+
+        public ActionResult<ReadProfileCompanyDTO> GetProfileCompany([FromRoute] int id)
+        {
+            ReadProfileCompanyDTO companyProfile = _companyService.GetProfile(id);
+            if (companyProfile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(companyProfile);
         }
     }
 }
