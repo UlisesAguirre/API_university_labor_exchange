@@ -13,5 +13,9 @@ namespace API_university_labor_exchange.Data.Implementations
             return _context.Users.FirstOrDefault(u => u.IdUser == id);
         }
 
+        public void UpdateUser(User user)
+        {
+            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        }
     }
 }

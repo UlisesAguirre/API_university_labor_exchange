@@ -29,7 +29,7 @@ namespace API_university_labor_exchange.Controllers
         [HttpGet("GetSkill")]
         public ActionResult<ReadSkillDTO> GetSkill(int skillId)
         {
-            var skill = _skillService.GetSkillBy(skillId);
+            var skill = _skillService.GetSkill(skillId);
             if(skill == null)
                 return NotFound();
             return Ok(skill);

@@ -1,11 +1,15 @@
 ﻿using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.SkillDTOs;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
     public class ReadAllStudentDTO
     {
+        public string Email { get; set; }
+        public string Username { get; set; }
         public string Legajo { get; set; } = null!;
+
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public DocumentType? DocumentType { get; set; }
 
@@ -63,9 +67,9 @@ namespace API_university_labor_exchange.Models.Student
 
         public int IdUser { get; set; }
 
-        public string? CareerName { get; set; }
+        public int IdCarrer { get; set; }
 
-        public List<int> SkillId { get; set; }
-
+        public virtual List<StudentSkillsDto> StudentsSkills { get; } = new List<StudentSkillsDto>();
+ 
     }
 }

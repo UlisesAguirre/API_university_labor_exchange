@@ -36,9 +36,14 @@ namespace API_university_labor_exchange.Services.Implementations
         public void UpdateCompany(UpdateCompanyDTO company, int id)
         {
             var CompanyToUpdate = _companyRepository.GetCompany(id);
-            _mapper.Map(company, CompanyToUpdate);
-            _companyRepository.UpdateCompany(CompanyToUpdate);
-            _companyRepository.SaveChanges();
+
+            if(CompanyToUpdate != null) 
+            { 
+                _mapper.Map(company, CompanyToUpdate);
+                _companyRepository.UpdateCompany(CompanyToUpdate);
+                _companyRepository.SaveChanges(); 
+            }
+           
         }
 
         public ReadProfileCompanyDTO GetProfile(int id)
@@ -52,7 +57,6 @@ namespace API_university_labor_exchange.Services.Implementations
             companyProfile.Username = userData.Username;
 
             return companyProfile;
-
 
         }
     }

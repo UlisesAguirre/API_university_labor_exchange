@@ -24,8 +24,8 @@ namespace API_university_labor_exchange.Controllers
             return Ok(companies);
         }
 
-        [HttpGet("GetCompany")]
-        public ActionResult<ReadAllCompanyDTO> GetCompany(int id)
+        [HttpGet("GetCompany/{id}")]
+        public ActionResult<ReadAllCompanyDTO> GetCompany([FromRoute] int id)
         {
             var company = _companyService.GetCompany(id);
             if (company == null)
@@ -36,10 +36,12 @@ namespace API_university_labor_exchange.Controllers
         [HttpPut("UpdateCompany")]
         public ActionResult UpdateCompany([FromBody] UpdateCompanyDTO company)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-           
-            if (!int.TryParse(userIdClaim, out int companyId))
-                return Unauthorized();
+            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            //if (!int.TryParse(userIdClaim, out int companyId))
+            //return Unauthorized();
+
+            var companyId = company.IdUser;
             
             _companyService.UpdateCompany(company, companyId);
             return Ok("Compañia actualizada con exito");
