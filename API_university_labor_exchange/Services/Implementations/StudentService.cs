@@ -1,9 +1,13 @@
-﻿using API_university_labor_exchange.Data.Interfaces;
+﻿using API_university_labor_exchange.Data.Implementations;
+using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models;
+using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace API_university_labor_exchange.Services.Implementations
 {
@@ -11,29 +15,34 @@ namespace API_university_labor_exchange.Services.Implementations
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ISkillRepository _skillRepository;
         private readonly IMapper _mapper;
 
-        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, IMapper mapper)
+        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, ISkillRepository skillRepository, IMapper mapper)
         {
             _studentRepository = studentRepository; 
             _userRepository = userRepository;
+            _skillRepository = skillRepository;
             _mapper = mapper;
         }
         public ICollection<ReadAllStudentDTO> GetAllStudents()
         {
             var students = _studentRepository.GetAllStudents();
+           
             return _mapper.Map<ICollection<ReadAllStudentDTO>>(students);
         }
 
         public ReadAllStudentDTO? GetStudent(int id)
         {
             var student = _studentRepository.GetStudent(id);
-            return _mapper.Map<ReadAllStudentDTO>(student);
-        }
+            User userData = _userRepository.GetUserById(id);
+            
+            var UserStudent = _mapper.Map<ReadAllStudentDTO>(student);
 
-        public void UpdateStudent(UpdateStudentDTO student)
-        {
-            throw new NotImplementedException();
+            UserStudent.Email = userData.Email;
+            UserStudent.Username = userData.Username;
+
+            return UserStudent;
         }
 
         public ReadProfileStudentDTO GetProfile(int id)
@@ -47,8 +56,21 @@ namespace API_university_labor_exchange.Services.Implementations
             studentProfile.Username = userData.Username;
 
             return studentProfile;
+        }
 
+        public void UpdateStudent(UpdateStudentDTO student, int id)
+        {
+            Student? studentToUpdate = _studentRepository.GetStudent(id);
 
+            if (studentToUpdate != null)
+            {
+             
+                _mapper.Map(student, studentToUpdate);
+                _studentRepository.UpdateStudent(studentToUpdate);
+              
+                _studentRepository.SaveChanges();
+
+            }
         }
     }
 }

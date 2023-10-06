@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
 
-public partial class Student
+public partial class Student 
 {
     public string Legajo { get; set; } = null!;
 
@@ -23,11 +23,11 @@ public partial class Student
 
     public Sex? Sex { get; set; }
 
-    public string? Address { get; set; }
+    public string? Address { get; set; } 
 
     public int? AddressNumber { get; set; }
 
-    public int? Floor { get; set; }
+    public int? Floor { get; set; }   
 
     public string? Flat { get; set; }
 
@@ -58,6 +58,8 @@ public partial class Student
     public string? SecondaryDegree { get; set; }
 
     public string? Observations { get; set; }
+
+    public string? StudyProgram { get; set; }
 
     public int IdUser { get; set; }
 

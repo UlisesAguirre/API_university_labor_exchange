@@ -1,5 +1,8 @@
-﻿using API_university_labor_exchange.Models.Student;
+﻿using API_university_labor_exchange.Models;
+using API_university_labor_exchange.Models.Company;
+using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
+using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +25,8 @@ namespace API_university_labor_exchange.Controllers
             return Ok(students);
         }
 
-        [HttpGet("GetStudent")]
-        public ActionResult<ReadAllStudentDTO> GetStudent(int id)
+        [HttpGet("GetStudent/{id}")]
+        public ActionResult<ReadAllStudentDTO> GetStudent([FromRoute] int id)
         {
             var student = _studentService.GetStudent(id);
             if (student == null)
@@ -33,7 +36,7 @@ namespace API_university_labor_exchange.Controllers
 
         [HttpGet("GetStudentProfile/{id}")]
 
-        public ActionResult<ReadProfileStudentDTO> GetProfileStudent([FromRoute]int id)
+        public ActionResult<ReadProfileStudentDTO> GetProfileStudent([FromRoute] int id)
         {
             ReadProfileStudentDTO studentProfile = _studentService.GetProfile(id);
             if (studentProfile == null)
@@ -44,6 +47,22 @@ namespace API_university_labor_exchange.Controllers
             return Ok(studentProfile);
         }
 
+
+        [HttpPut("UpdateStudent")]
+        public ActionResult UpdateStudent([FromBody] UpdateStudentDTO student)
+        {
+            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            //if (!int.TryParse(userIdClaim, out int companyId))
+            //return Unauthorized();
+
+            var studentId = student.IdUser;
+
+            _studentService.UpdateStudent(student, studentId);
+
+            return Ok();
+
+        }
 
     }
 }

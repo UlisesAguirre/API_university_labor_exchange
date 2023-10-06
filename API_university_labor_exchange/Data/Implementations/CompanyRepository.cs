@@ -18,8 +18,8 @@ namespace API_university_labor_exchange.Data.Implementations
         }
         public void UpdateCompany(Company company)
         {
-            //_context.Entry(company).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.Companies.Update(company);
+            _context.Entry(company).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            //_context.Companies.Update(company);
 
         }
         

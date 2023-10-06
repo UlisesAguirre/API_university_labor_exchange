@@ -1,4 +1,6 @@
-﻿namespace API_university_labor_exchange.Models.Company
+﻿using System.Text.Json.Serialization;
+
+namespace API_university_labor_exchange.Models.Company
 {
     public class UpdateCompanyDTO
     {
@@ -30,6 +32,7 @@
 
         public string? RecruiterEmail { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RecruiterRelWithCompany? RecruiterRelWithCompany { get; set; }
 
         public int IdUser { get; set; }

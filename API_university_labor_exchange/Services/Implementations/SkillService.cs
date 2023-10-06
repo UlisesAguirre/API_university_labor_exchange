@@ -21,9 +21,9 @@ namespace API_university_labor_exchange.Services.Implementations
             var skills = _skillRepository.GetAllSkills();
             return _mapper.Map<ICollection<ReadSkillDTO>>(skills);
         }
-        public ReadSkillDTO? GetSkillBy(int skillId)
+        public ReadSkillDTO? GetSkill(int skillId)
         {
-            var skill = _skillRepository.GetSkillBy(skillId);
+            var skill = _skillRepository.GetSkill(skillId);
             return _mapper.Map<ReadSkillDTO>(skill);
 
         }

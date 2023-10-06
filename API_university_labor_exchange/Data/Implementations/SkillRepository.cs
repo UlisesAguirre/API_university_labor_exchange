@@ -13,7 +13,7 @@ namespace API_university_labor_exchange.Data.Implementations
             return _context.Skills.OrderBy(s => s.SkillName).ToList();
 
         }
-        public Skill? GetSkillBy(int skillId)
+        public Skill? GetSkill(int skillId)
         {
             return _context.Skills.Find(skillId);
         }

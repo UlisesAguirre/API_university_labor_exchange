@@ -1,4 +1,6 @@
-﻿using API_university_labor_exchange.Entities;
+﻿
+using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.SkillDTOs;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
@@ -15,7 +17,6 @@ namespace API_university_labor_exchange.Models.Student
 
         public string LastName { get; set; } = null!;
 
-
         public DateTime? BirthDate { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -23,6 +24,7 @@ namespace API_university_labor_exchange.Models.Student
 
         public string? Cuil { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Sex? Sex { get; set; }
 
         public string? Address { get; set; }
@@ -53,6 +55,7 @@ namespace API_university_labor_exchange.Models.Student
 
         public int? CurrentCareerYear { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Turn? Turn { get; set; }
 
         public double? Average { get; set; }
@@ -65,8 +68,7 @@ namespace API_university_labor_exchange.Models.Student
 
         public int IdUser { get; set; }
 
-        public int IdCarrer { get; set; }
+        //public int IdCarrer { get; set; }
 
-        public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
     }
 }

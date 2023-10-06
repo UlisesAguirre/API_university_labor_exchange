@@ -9,5 +9,6 @@ namespace API_university_labor_exchange.Data.Interfaces
         public IEnumerable<Student> GetAllStudents();
         public Student? GetStudent(int id);
         public void UpdateStudent (Student student);
+        public void AddStudentsSkill(StudentsSkill studentSkill);
     }
 }
