@@ -4,7 +4,8 @@ namespace API_university_labor_exchange.Models.Company
 {
     public class UpdateCompanyDTO
     {
-        public string? CompanyName { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
 
         public string Cuit { get; set; } = null!;
 
