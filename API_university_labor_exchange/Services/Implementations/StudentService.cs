@@ -27,8 +27,9 @@ namespace API_university_labor_exchange.Services.Implementations
         }
         public ICollection<ReadAllStudentDTO> GetAllStudents()
         {
+            //falta trae los datos del usuario de cada student
             var students = _studentRepository.GetAllStudents();
-           
+            
             return _mapper.Map<ICollection<ReadAllStudentDTO>>(students);
         }
 
@@ -61,12 +62,16 @@ namespace API_university_labor_exchange.Services.Implementations
         public void UpdateStudent(UpdateStudentDTO student, int id)
         {
             Student? studentToUpdate = _studentRepository.GetStudent(id);
+            User? userToUpdate = _userRepository.GetUserById(id);
 
-            if (studentToUpdate != null)
+            if (studentToUpdate != null && userToUpdate != null)
             {
-             
+                userToUpdate.Email = student.Email;
+                userToUpdate.Username = student.Username;
+
                 _mapper.Map(student, studentToUpdate);
                 _studentRepository.UpdateStudent(studentToUpdate);
+                _userRepository.UpdateUser(userToUpdate);
               
                 _studentRepository.SaveChanges();
 
