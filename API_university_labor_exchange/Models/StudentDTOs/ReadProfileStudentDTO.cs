@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.SkillDTOs;
 
 namespace API_university_labor_exchange.Models.StudentDTOs
 {
@@ -33,8 +34,8 @@ namespace API_university_labor_exchange.Models.StudentDTOs
 
         public double? Average { get; set; }
 
-        public int? IdCarrer { get; set; }
-        public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
+        //public int? IdCarrer { get; set; }
+        public virtual ICollection<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
 
     }
 }
