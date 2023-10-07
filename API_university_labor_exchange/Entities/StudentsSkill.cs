@@ -7,7 +7,7 @@ public partial class StudentsSkill
 
     public string Legajo { get; set; } = null!;
 
-    public int IdSkill { get; set; }
+    public int? IdSkill { get; set; }
 
     public string? SkillLevel { get; set; }
 
