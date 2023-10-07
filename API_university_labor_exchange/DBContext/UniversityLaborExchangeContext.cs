@@ -321,7 +321,7 @@ public partial class UniversityLaborExchangeContext : DbContext
 
             entity.HasOne(d => d.LegajoNavigation).WithMany(p => p.StudentsSkills)
                 .HasForeignKey(d => d.Legajo)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Students_skills_Students");
         });
 
