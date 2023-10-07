@@ -8,6 +8,7 @@ namespace API_university_labor_exchange.Models.Company
         public string Email { get; set; }
         public string Username { get; set; }
 
+        public string? CompanyName { get; set; }
         public string Cuit { get; set; } = null!;
 
         public string SocialReason { get; set; } = null!;
