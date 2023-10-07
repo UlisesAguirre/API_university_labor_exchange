@@ -58,9 +58,13 @@ namespace API_university_labor_exchange.Controllers
 
             var studentId = student.IdUser;
 
+            var skills = student.ListSkills;
+
             _studentService.UpdateStudent(student, studentId);
 
-            return Ok();
+            _studentService.UpdateSkills(skills, studentId);
+
+            return Ok(skills);
 
         }
 

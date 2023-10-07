@@ -477,3 +477,8 @@ $RECYCLE.BIN/
 *.lnk
 
 .gitignore
+
+#Agregamos el appsettings para no romper la configuracion de conexion con Sql
+
+appsettings.json
+

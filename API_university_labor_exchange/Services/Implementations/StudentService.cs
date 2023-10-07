@@ -3,10 +3,12 @@ using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.Company;
+using API_university_labor_exchange.Models.SkillDTOs;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
+using Azure.Core;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace API_university_labor_exchange.Services.Implementations
@@ -76,6 +78,27 @@ namespace API_university_labor_exchange.Services.Implementations
                 _studentRepository.SaveChanges();
 
             }
+        }
+
+        public void UpdateSkills(List<StudentSkillsDto> skills, int id)
+        {
+            Student? studentToUpdate = _studentRepository.GetStudent(id);
+
+            var skillList = _mapper.Map<List<StudentsSkill>>(skills);
+
+            if (studentToUpdate != null)
+            {
+                foreach(var skill in skillList)
+                {
+                    if(skill.IdSkill != null)
+                    {
+                        _studentRepository.UpdateStudentsSkill(skill, id);
+                    }
+                } 
+            }
+
+            _studentRepository.DeleteStudentsSkill(skillList, id);
+
         }
     }
 }
