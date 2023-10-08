@@ -69,12 +69,9 @@ namespace API_university_labor_exchange.Models.Student
         public string? Observations { get; set; }
 
         public int IdUser { get; set; }
-        public virtual List<StudentSkillsDto> ListSkills { get; set; } = new List<StudentSkillsDto>();
+        public virtual List<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
 
-        public int IdCarrer { get; set; }
-
-        //public virtual List<StudentSkillsDto> StudentsSkills { get; } = new List<StudentSkillsDto>();
-
+        public int? IdCarrer { get; set; }
 
     }
 }
