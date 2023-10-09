@@ -7,6 +7,8 @@ namespace API_university_labor_exchange.Models.Student
 {
     public class UpdateStudentDTO
     {
+        public string Email { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public DocumentType? DocumentType { get; set; }
@@ -67,10 +69,9 @@ namespace API_university_labor_exchange.Models.Student
         public string? Observations { get; set; }
 
         public int IdUser { get; set; }
-        public virtual List<StudentSkillsDto> ListSkills { get; set; } = new List<StudentSkillsDto>();
+        public virtual List<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
 
-        //public int IdCarrer { get; set; }
-
+        public int? IdCarrer { get; set; }
 
     }
 }

@@ -30,17 +30,30 @@ namespace API_university_labor_exchange.Services.Implementations
         public ReadAllCompanyDTO? GetCompany(int id) 
         {
             var company = _companyRepository.GetCompany(id);
-            return _mapper.Map<ReadAllCompanyDTO>(company);
+            User userData = _userRepository.GetUserById(id);
+
+            var userCompany = _mapper.Map<ReadAllCompanyDTO>(company);
+
+            userCompany.Email = userData.Email;
+            userCompany.Username = userData.Username;
+
+            return userCompany;
         }
 
         public void UpdateCompany(UpdateCompanyDTO company, int id)
         {
             var CompanyToUpdate = _companyRepository.GetCompany(id);
+            User? userToUpdate = _userRepository.GetUserById(id);
 
-            if(CompanyToUpdate != null) 
+            if (CompanyToUpdate != null && userToUpdate != null) 
             { 
+                userToUpdate.Email = company.Email;
+                userToUpdate.Username = company.Username;
+
                 _mapper.Map(company, CompanyToUpdate);
                 _companyRepository.UpdateCompany(CompanyToUpdate);
+                _userRepository.UpdateUser(userToUpdate);
+
                 _companyRepository.SaveChanges(); 
             }
            
