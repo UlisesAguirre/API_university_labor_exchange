@@ -5,6 +5,7 @@ using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API_university_labor_exchange.Controllers
 {
@@ -67,6 +68,27 @@ namespace API_university_labor_exchange.Controllers
             return Ok(skills);
 
         }
+
+        [HttpPost("AddCurriculum")]
+        public ActionResult AddCurriculum([FromForm] AddCurriculumDTO request)
+        {
+            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            //if (!int.TryParse(userIdClaim, out int studentId))
+            //    return Unauthorized();
+
+            var studentId = request.Id;
+
+            IFormFile curriculum = request.Curriculum;
+
+            if (curriculum.Length < 0)
+                return BadRequest("Debe agregar un archivo pdf valido");
+
+            _studentService.AddCurriculum(curriculum, studentId);
+
+            return Ok();
+        }
+
 
     }
 }

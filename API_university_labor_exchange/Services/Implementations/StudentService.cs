@@ -22,7 +22,7 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, ISkillRepository skillRepository, IMapper mapper)
         {
-            _studentRepository = studentRepository; 
+            _studentRepository = studentRepository;
             _userRepository = userRepository;
             _skillRepository = skillRepository;
             _mapper = mapper;
@@ -31,7 +31,7 @@ namespace API_university_labor_exchange.Services.Implementations
         {
             //falta trae los datos del usuario de cada student
             var students = _studentRepository.GetAllStudents();
-            
+
             return _mapper.Map<ICollection<ReadAllStudentDTO>>(students);
         }
 
@@ -39,7 +39,7 @@ namespace API_university_labor_exchange.Services.Implementations
         {
             var student = _studentRepository.GetStudent(id);
             User userData = _userRepository.GetUserById(id);
-            
+
             var UserStudent = _mapper.Map<ReadAllStudentDTO>(student);
 
             UserStudent.Email = userData.Email;
@@ -74,7 +74,7 @@ namespace API_university_labor_exchange.Services.Implementations
                 _mapper.Map(student, studentToUpdate);
                 _studentRepository.UpdateStudent(studentToUpdate);
                 _userRepository.UpdateUser(userToUpdate);
-              
+
                 _studentRepository.SaveChanges();
 
             }
@@ -88,17 +88,38 @@ namespace API_university_labor_exchange.Services.Implementations
 
             if (studentToUpdate != null)
             {
-                foreach(var skill in skillList)
+                foreach (var skill in skillList)
                 {
-                    if(skill.IdSkill != null)
+                    if (skill.IdSkill != null)
                     {
                         _studentRepository.UpdateStudentsSkill(skill, id);
                     }
-                } 
+                }
             }
 
             _studentRepository.DeleteStudentsSkill(skillList, id);
 
         }
+
+        public void AddCurriculum(IFormFile curriculum, int studentId)
+        {
+            Student? student = _studentRepository.GetStudent(studentId);
+            
+            if (student != null)
+            {
+                using var fileStream = curriculum.OpenReadStream(); //OpenReadStream() abre la request stream para leer el archivo
+                byte[] bytes = new byte[curriculum.Length]; //declaro un array de bytes con la longitud requerida por el archivo
+                fileStream.Read(bytes, 0, bytes.Length); // mappea los bytes del archivo y los guarda en el array bytes
+
+                student.Curriculum = bytes;
+
+                _studentRepository.UpdateStudent(student);
+                _studentRepository.SaveChanges();
+            }
+
+        }
+
+
+
     }
 }
