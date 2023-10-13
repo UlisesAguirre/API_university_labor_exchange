@@ -13,5 +13,6 @@
         public string? Sector { get; set; }
 
         public string? Web { get; set; }
+        public string? TelephoneNumber { get; set; }
     }
 }
