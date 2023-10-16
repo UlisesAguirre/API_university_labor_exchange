@@ -1,15 +1,15 @@
-﻿using API_university_labor_exchange.Models;
-using API_university_labor_exchange.Models.Company;
-using API_university_labor_exchange.Models.Student;
+﻿using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
-using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -19,6 +19,7 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetAllStudents")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadAllStudentDTO>> GetAllStudents()
         {
             var students = _studentService.GetAllStudents();
@@ -26,18 +27,40 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetStudent/{id}")]
+        [Authorize(Roles = "student,admin")]
         public ActionResult<ReadAllStudentDTO> GetStudent([FromRoute] int id)
         {
-            var student = _studentService.GetStudent(id);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            var student = new ReadAllStudentDTO();
+
+            if(userRole == "admin")
+            {
+                student = _studentService.GetStudent(id);
+            } else
+            {
+                student = _studentService.GetStudent(Int32.Parse(userIdClaim));
+            }
+
+            
             if (student == null)
                 return NotFound();
             return Ok(student);
         }
 
         [HttpGet("GetStudentProfile/{id}")]
+        [Authorize(Roles = "student")]
 
         public ActionResult<ReadProfileStudentDTO> GetProfileStudent([FromRoute] int id)
         {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (id != Int32.Parse(userIdClaim))
+            {
+                Forbid();
+            }
+
             ReadProfileStudentDTO studentProfile = _studentService.GetProfile(id);
             if (studentProfile == null)
             {
@@ -49,12 +72,16 @@ namespace API_university_labor_exchange.Controllers
 
 
         [HttpPut("UpdateStudent")]
+        [Authorize(Roles = "student")]
         public ActionResult UpdateStudent([FromBody] UpdateStudentDTO student)
         {
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            //if (!int.TryParse(userIdClaim, out int companyId))
-            //return Unauthorized();
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (student.IdUser != Int32.Parse(userIdClaim))
+            {
+                return Forbid();
+            }
 
             var studentId = student.IdUser;
 
