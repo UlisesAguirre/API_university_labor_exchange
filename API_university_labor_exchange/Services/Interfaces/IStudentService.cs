@@ -14,5 +14,8 @@ namespace API_university_labor_exchange.Services.Interfaces
         ReadProfileStudentDTO GetProfile(int id);
         void UpdateSkills(List<StudentSkillsDto> skills, int id);
         public void AddCurriculum(IFormFile curriculum, int studentId);
+        public bool DeleteCurriculum(int id);
+
+        public Student GetCurriculum(int id);
     }
 }

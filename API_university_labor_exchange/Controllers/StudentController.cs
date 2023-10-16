@@ -1,5 +1,5 @@
-﻿using API_university_labor_exchange.Models;
-using API_university_labor_exchange.Models.Company;
+﻿
+using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Implementations;
@@ -69,7 +69,7 @@ namespace API_university_labor_exchange.Controllers
 
         }
 
-        [HttpPost("AddCurriculum")]
+        [HttpPut("AddCurriculum")]
         public ActionResult AddCurriculum([FromForm] AddCurriculumDTO request)
         {
             //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -89,6 +89,26 @@ namespace API_university_labor_exchange.Controllers
             return Ok();
         }
 
+        [HttpPut("DeleteCurriculum")]
+        public ActionResult DeleteCurriculum([FromBody] int id)
+        {
+            if(_studentService.DeleteCurriculum(id))
+               return Ok("curriculum eliminado con exito");
+            return BadRequest("Error al eliminar el curriculum");
+        }
 
+        [HttpGet("GetCurriculum/{id}")]
+        public ActionResult GetCurriculum([FromRoute] int id)
+        {
+            var student = _studentService.GetCurriculum(id);
+
+            if (student == null)
+                return NotFound();
+
+            if(student.Curriculum != null)
+                return File(student.Curriculum, "application/pdf", $"{student.Name}_{student.LastName}_CV.pdf");
+
+            return NotFound("No tiene curriculum");
+        }
     }
 }

@@ -119,7 +119,22 @@ namespace API_university_labor_exchange.Services.Implementations
 
         }
 
+        public bool DeleteCurriculum(int id)
+        {
+            Student? student = _studentRepository.GetStudent(id);
+            
+            if(student != null)
+            {
+                student.Curriculum = null;
+                if (_studentRepository.SaveChanges())
+                    return true;
+            }
+            return false;
+        }
 
-
+        public Student GetCurriculum(int id)
+        { 
+           return _studentRepository.GetStudent(id);
+        }
     }
 }

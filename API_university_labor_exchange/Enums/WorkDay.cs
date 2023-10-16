@@ -4,4 +4,5 @@ public enum WorkDay
 {
 	FullTime,
 	PartTime,
+    Freelance,
 }
