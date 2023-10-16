@@ -1,6 +1,4 @@
-﻿using API_university_labor_exchange.Models;
-using API_university_labor_exchange.Models.Company;
-using API_university_labor_exchange.Models.Student;
+﻿using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
