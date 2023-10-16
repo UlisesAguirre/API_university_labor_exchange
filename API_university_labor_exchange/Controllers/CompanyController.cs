@@ -1,6 +1,8 @@
-﻿using API_university_labor_exchange.Models.Company;
+﻿using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.CompanyDTOs;
 using API_university_labor_exchange.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -8,6 +10,7 @@ namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -18,28 +21,46 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetAllCompanies")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadAllCompanyDTO>> GetAllCompanies()
         {
             var companies = _companyService.GetAllCompanies(); 
             return Ok(companies);
         }
 
+
         [HttpGet("GetCompany/{id}")]
+        [Authorize(Roles = "company,admin")]
         public ActionResult<ReadAllCompanyDTO> GetCompany([FromRoute] int id)
         {
-            var company = _companyService.GetCompany(id);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            var company = new ReadAllCompanyDTO();
+
+            if (userRole == "admin")
+            {
+                company = _companyService.GetCompany(id);
+            } else
+            {
+                company = _companyService.GetCompany(Int32.Parse(userIdClaim));
+            }
+
             if (company == null)
                 return NotFound();
             return Ok(company);
         }
 
         [HttpPut("UpdateCompany")]
+        [Authorize(Roles = "company")]
         public ActionResult UpdateCompany([FromBody] UpdateCompanyDTO company)
         {
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            //if (!int.TryParse(userIdClaim, out int companyId))
-            //return Unauthorized();
+            if(company.IdUser != Int32.Parse(userIdClaim))
+            {
+                return Forbid();
+            }
 
             var companyId = company.IdUser;
             
@@ -49,9 +70,17 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetCompanyProfile/{id}")]
+        [Authorize(Roles = "company")]
 
         public ActionResult<ReadProfileCompanyDTO> GetProfileCompany([FromRoute] int id)
         {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (id != Int32.Parse(userIdClaim))
+            {
+                return Forbid();
+            }
+
             ReadProfileCompanyDTO companyProfile = _companyService.GetProfile(id);
             if (companyProfile == null)
             {
