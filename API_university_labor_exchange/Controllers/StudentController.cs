@@ -1,6 +1,7 @@
 ﻿using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -95,5 +96,72 @@ namespace API_university_labor_exchange.Controllers
 
         }
 
+        [HttpPut("AddCurriculum")]
+        [Authorize(Roles = "student")]
+        public ActionResult AddCurriculum([FromForm] AddCurriculumDTO request)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userIdClaim, out int studentId))
+                return Unauthorized();
+
+            if (request.Id != studentId)
+            {
+                return Forbid();
+            }
+
+            IFormFile curriculum = request.Curriculum;
+
+            if (curriculum.Length < 0)
+                return BadRequest("Debe agregar un archivo pdf valido");
+
+            _studentService.AddCurriculum(curriculum, studentId);
+
+            return Ok();
+        }
+
+        [HttpPut("DeleteCurriculum")]
+        [Authorize(Roles = "student")]
+        public ActionResult DeleteCurriculum([FromBody] int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userIdClaim, out int studentId))
+                return Unauthorized();
+
+            if (id != studentId)
+            {
+                return Forbid();
+            }
+
+            if (_studentService.DeleteCurriculum(id))
+               return Ok("curriculum eliminado con exito");
+            return BadRequest("Error al eliminar el curriculum");
+        }
+
+        [HttpGet("GetCurriculum/{id}")]
+        [Authorize(Roles = "student")]
+        public ActionResult GetCurriculum([FromRoute] int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(userIdClaim, out int studentId))
+                return Unauthorized();
+
+            if (id != studentId)
+            {
+                return Forbid();
+            }
+
+            var student = _studentService.GetCurriculum(id);
+
+            if (student == null)
+                return NotFound();
+
+            if(student.Curriculum != null)
+                return File(student.Curriculum, "application/pdf", $"{student.Name}_{student.LastName}_CV.pdf");
+
+            return NotFound("No tiene curriculum");
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.CompanyDTOs;
+using API_university_labor_exchange.Models.JobPositionDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace API_university_labor_exchange.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
+        private readonly IJobPositionService _jobPositionservice;
 
-        public CompanyController(ICompanyService companyService)
+        public CompanyController(ICompanyService companyService, IJobPositionService jobPositionService)
         {
             _companyService = companyService;
+            _jobPositionservice = jobPositionService;
         }
 
         [HttpGet("GetAllCompanies")]
@@ -88,6 +91,22 @@ namespace API_university_labor_exchange.Controllers
             }
 
             return Ok(companyProfile);
+        }
+
+
+        [HttpPost("AddJobPosition")]
+        [Authorize(Roles = "company")]
+        public ActionResult AddJobPosition([FromBody] CreateJobPositionDTO jobPositionDTO)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int companyId))
+                return Unauthorized();
+           
+            jobPositionDTO.IdCompany = _companyService.GetCompany(companyId).Cuit;
+
+            _jobPositionservice.AddJobPosition(jobPositionDTO);
+            
+            return Ok();
         }
     }
 }
