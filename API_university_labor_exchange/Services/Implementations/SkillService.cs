@@ -29,10 +29,21 @@ namespace API_university_labor_exchange.Services.Implementations
         }
         public void AddSkill(CreateSkillDTO createSkillDTO)
         {
-            var newSkill = _mapper.Map<Skill>(createSkillDTO);
+            Skill newSkill = new Skill();
+            newSkill.SkillName = createSkillDTO.SkillName;
+
             _skillRepository.AddSkill(newSkill);
             _skillRepository.SaveChanges();
 
+        }
+
+        public void DeleteSkill(int skillId)
+        {
+            if (skillId != null)
+            {
+                _skillRepository.DeleteSkill(skillId);
+                _skillRepository.SaveChanges();
+            }
         }
     }
 }

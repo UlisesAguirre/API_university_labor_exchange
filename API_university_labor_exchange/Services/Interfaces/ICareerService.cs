@@ -8,8 +8,6 @@ namespace API_university_labor_exchange.Services.Interfaces
         public ICollection<ReadCareerDTO> GetAllCareers();
         public ReadCareerDTO GetCareerById (int careerId);
         public ReadCareerDTO AddCareer(CreateCareerDTO createCareerDTO);
-
-        //public void UpdateCareer(UpdateCareerDTO updateCareerDTO);
-        //public void DeleteCareer(int careerId);
+        void UpdateCareer(CreateCareerDTO createCareerDTO);
     }
 }

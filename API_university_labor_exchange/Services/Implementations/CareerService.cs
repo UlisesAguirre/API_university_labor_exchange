@@ -29,14 +29,25 @@ namespace API_university_labor_exchange.Services.Implementations
         }
         public ReadCareerDTO AddCareer(CreateCareerDTO createCareerDTO)
         {
-            //Agregar validaciones
-            var newCareer = _mapper.Map<Career>(createCareerDTO);
+            Career newCareer = new Career
+            {
+                Name= createCareerDTO.Name,
+                Abbreviation= createCareerDTO.Abbreviation,
+                CareerType = createCareerDTO.CareerType,
+                TotalSubjets = createCareerDTO.TotalSubjets
+            };
+
             _careerRepository.AddCareer(newCareer);
             if (_careerRepository.SaveChanges()){
                 return _mapper.Map<ReadCareerDTO>(newCareer);
             }
             return null;
-           
+        }
+
+        public void UpdateCareer(CreateCareerDTO createCareerDTO)
+        {
+            var updateCareer = _mapper.Map<Career>(createCareerDTO);
+            _careerRepository.UpdateCareer(updateCareer);
 
         }
 

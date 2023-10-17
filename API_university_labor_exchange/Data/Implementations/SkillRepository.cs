@@ -21,5 +21,15 @@ namespace API_university_labor_exchange.Data.Implementations
         {
             _context.Add(newSkill);
         }
+
+        public void DeleteSkill(int? skillId)
+        {
+            var skill = _context.Skills.Find(skillId);
+
+            if (skill != null)
+            {
+                _context.Skills.Remove(skill);
+            }
+        }
     }
 }
