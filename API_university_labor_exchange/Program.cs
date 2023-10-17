@@ -69,6 +69,8 @@ builder.Services.AddScoped<ICareerService, CareerService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IJobPositionService, JobPositionService>();
+
 
 //Add repositories -
 
@@ -80,6 +82,8 @@ builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IJobPositionRepository, JobPositionRepository>();
+
 
 
 //Add automapper - 
