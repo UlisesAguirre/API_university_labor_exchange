@@ -43,8 +43,6 @@ namespace API_university_labor_exchange.Models.Student
 
         public string? City { get; set; }
 
-        public byte[]? Curriculum { get; set; }
-
         public string? GithubProfileUrl { get; set; }
 
         public string? LinkedInProfileUrl { get; set; }
