@@ -3,5 +3,7 @@
     public class CreateSkillDTO
     {
         public string SkillName { get; set; }
+
+        public bool State { get; set; } = true;
     }
 }

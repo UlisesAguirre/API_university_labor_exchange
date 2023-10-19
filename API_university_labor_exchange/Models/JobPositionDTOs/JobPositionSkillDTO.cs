@@ -3,7 +3,7 @@
     public class JobPositionSkillDTO 
     {
         public int IdSkill { get; set; }
-        public string? SkillLevel { get; set; }
+        public string SkillLevel { get; set; }
 
     }
 }

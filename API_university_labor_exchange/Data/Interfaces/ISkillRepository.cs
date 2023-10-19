@@ -8,5 +8,7 @@ namespace API_university_labor_exchange.Data.Interfaces
         public IEnumerable<Skill> GetAllSkills();
         public Skill? GetSkill(int? skillId);
         public void AddSkill(Skill newSkill);
+
+        public ICollection<Skill> GetSkillsForForm();
     }
 }

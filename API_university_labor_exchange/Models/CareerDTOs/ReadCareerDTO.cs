@@ -12,6 +12,8 @@ namespace API_university_labor_exchange.Models.CareerDTOs
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public CareerType CareerType { get; set; }
 
+        public bool State { get; set; }
+
         public int TotalSubjets { get; set; }
 
     }

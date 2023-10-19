@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using API_university_labor_exchange.Enums;
+using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.JobPositionDTOs
 {
@@ -12,7 +13,7 @@ namespace API_university_labor_exchange.Models.JobPositionDTOs
 
         public string? Location { get; set; }
 
-        public int? PositionToCover { get; set; }
+        public string? PositionToCover { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public JobType? JobType { get; set; }
@@ -32,7 +33,10 @@ namespace API_university_labor_exchange.Models.JobPositionDTOs
 
         public DateTime? TentativeStartDate { get; set; }
 
-        public string IdCompany { get; set; } = null!;
+        public string? IdCompany { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public State State { get; set; } = State.SinAsignar;
         public List<JobPositionCareerDTO> jobPositionCareer { get; set; } = new List<JobPositionCareerDTO>();
 
         public List<JobPositionSkillDTO> jobPositionSkill { get; set; } = new List<JobPositionSkillDTO>();
