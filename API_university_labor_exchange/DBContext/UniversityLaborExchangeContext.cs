@@ -127,8 +127,7 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.JobType)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasConversion(v => v.ToString(), v => (JobType)Enum.Parse(typeof(JobType), v));
+                .IsUnicode(false);
             entity.Property(e => e.Location)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -139,8 +138,7 @@ public partial class UniversityLaborExchangeContext : DbContext
             entity.Property(e => e.TentativeStartDate).HasColumnType("date");
             entity.Property(e => e.WorkDay)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasConversion(v => v.ToString(), v => (WorkDay)Enum.Parse(typeof(WorkDay), v));
+                .IsUnicode(false);
 
             entity.HasOne(d => d.IdCompanyNavigation).WithMany(p => p.JobPositions)
                 .HasForeignKey(d => d.IdCompany)
