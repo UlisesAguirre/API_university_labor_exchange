@@ -1,6 +1,7 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.DBContext;
 using API_university_labor_exchange.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_university_labor_exchange.Data.Implementations
 {
@@ -12,6 +13,12 @@ namespace API_university_labor_exchange.Data.Implementations
         {
             _context.JobPositions.Add(jobPosition);
             _context.SaveChanges();
+        }
+
+        public List<JobPosition> GetAllJobPosition()
+        {
+            return _context.JobPositions.Include(j => j.JobPositionsCareers)
+                .Include(j => j.JobPostionsSkills).ToList();
         }
     }
 }
