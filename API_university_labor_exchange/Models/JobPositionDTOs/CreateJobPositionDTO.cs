@@ -32,7 +32,7 @@ namespace API_university_labor_exchange.Models.JobPositionDTOs
 
         public DateTime? TentativeStartDate { get; set; }
 
-        public string IdCompany { get; set; } = null!;
+        public string? IdCompany { get; set; }
         public List<JobPositionCareerDTO> jobPositionCareer { get; set; } = new List<JobPositionCareerDTO>();
 
         public List<JobPositionSkillDTO> jobPositionSkill { get; set; } = new List<JobPositionSkillDTO>();

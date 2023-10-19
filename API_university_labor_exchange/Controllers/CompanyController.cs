@@ -106,7 +106,7 @@ namespace API_university_labor_exchange.Controllers
 
             _jobPositionservice.AddJobPosition(jobPositionDTO);
             
-            return Ok();
+            return Ok("Busqueda Laboral agregada con exito");
         }
     }
 }
