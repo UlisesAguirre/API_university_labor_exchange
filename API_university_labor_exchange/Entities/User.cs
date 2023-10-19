@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API_university_labor_exchange.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
@@ -14,6 +15,8 @@ public partial class User
     public string UserType { get; set; } = null!;
 
     public int IdUser { get; set; }
+
+    public State? State { get; set; }
 
     public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 

@@ -22,6 +22,13 @@ namespace API_university_labor_exchange.Services.Implementations
             return _mapper.Map<ICollection<ReadCareerDTO>>(careers);
         }
 
+        public ICollection<ReadCareersForFormDTO> GetCareersForForm()
+        {
+            var careers = _careerRepository.GetCareersForForm();
+            return _mapper.Map<ICollection<ReadCareersForFormDTO>>(careers);
+
+        };
+
         public ReadCareerDTO GetCareerById(int careerId)
         {
             var career = _careerRepository.GetCareerBy(careerId);

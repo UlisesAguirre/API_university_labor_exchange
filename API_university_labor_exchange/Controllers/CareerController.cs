@@ -23,6 +23,14 @@ namespace API_university_labor_exchange.Controllers
             return Ok(careers);
         }
 
+        [HttpGet("GetCareersForForms")]
+        public ActionResult<ICollection<ReadCareersForFormDTO>> GetCareersForForms()
+        {
+            var careers = _careerService.GetCareersForForm();
+            return Ok(careers);
+        }
+
+
         [HttpGet("GetCareer")]
         public ActionResult<ReadCareerDTO> GetCareer(int careerId) 
         {
@@ -39,6 +47,7 @@ namespace API_university_labor_exchange.Controllers
             _careerService.AddCareer(career);
             return Ok("Carrera cargada con exito");
         }
+
 
     }
 }

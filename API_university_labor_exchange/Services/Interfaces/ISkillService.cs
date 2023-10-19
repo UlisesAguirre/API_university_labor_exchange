@@ -8,5 +8,8 @@ namespace API_university_labor_exchange.Services.Interfaces
         public IEnumerable<ReadSkillDTO> GetAllSkills();
         public ReadSkillDTO? GetSkill(int skillId);
         public void AddSkill(CreateSkillDTO createSkillDTO);
+
+        public ICollection<ReadSkillDTO> GetSkillsForForm();
+
     }
 }
