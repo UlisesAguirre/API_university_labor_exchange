@@ -13,6 +13,11 @@ namespace API_university_labor_exchange.Data.Implementations
             return _context.Skills.OrderBy(s => s.SkillName).ToList();
 
         }
+        public ICollection<Skill> GetSkillsForForm()
+        {
+            return _context.Skills.Where(s => s.State == true).OrderBy(s => s.SkillName).ToList();
+        }
+
         public Skill? GetSkill(int? skillId)
         {
             return _context.Skills.Find(skillId);

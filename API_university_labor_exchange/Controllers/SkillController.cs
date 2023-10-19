@@ -25,6 +25,13 @@ namespace API_university_labor_exchange.Controllers
             return Ok(skills);
         }
 
+        [HttpGet("GetSkillsForForm")]
+        public ActionResult<ICollection<ReadSkillDTO>> GetSkillsForForm()
+        {
+            var skills = _skillService.GetSkillsForForm();
+            return Ok(skills);
+        }
+
 
         [HttpGet("GetSkill")]
         public ActionResult<ReadSkillDTO> GetSkill(int skillId)

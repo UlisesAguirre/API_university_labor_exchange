@@ -2,6 +2,6 @@
 
 public enum JobType
 {
-	Pasantía,
+	Pasantia,
 	Trabajo,
 }

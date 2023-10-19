@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Enums;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Company
@@ -32,7 +33,10 @@ namespace API_university_labor_exchange.Models.Company
 
         public string? RecruiterPhoneNumber { get; set; } 
 
-        public string? RecruiterEmail { get; set; } 
+        public string? RecruiterEmail { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public State State { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public RecruiterRelWithCompany? RecruiterRelWithCompany { get; set; }

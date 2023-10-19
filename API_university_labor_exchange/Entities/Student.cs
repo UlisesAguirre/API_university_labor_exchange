@@ -23,11 +23,11 @@ public partial class Student
 
     public Sex? Sex { get; set; }
 
-    public string? Address { get; set; } 
+    public string? Address { get; set; }
 
     public int? AddressNumber { get; set; }
 
-    public int? Floor { get; set; }   
+    public int? Floor { get; set; }
 
     public string? Flat { get; set; }
 
@@ -47,6 +47,8 @@ public partial class Student
 
     public int? ApprovedSubjects { get; set; }
 
+    public string? StudyProgram { get; set; }
+
     public int? CurrentCareerYear { get; set; }
 
     public Turn? Turn { get; set; }
@@ -59,13 +61,13 @@ public partial class Student
 
     public string? Observations { get; set; }
 
-    public string? StudyProgram { get; set; }
-
     public int IdUser { get; set; }
 
     public int? IdCarrer { get; set; }
 
-    public virtual Career IdCarrerNavigation { get; set; } = null!;
+    public bool? EmailValidation { get; set; }
+
+    public virtual Career? IdCarrerNavigation { get; set; }
 
     public virtual User IdUserNavigation { get; set; } = null!;
 

@@ -15,9 +15,9 @@ public partial class JobPosition
 
     public string? Location { get; set; }
 
-    public int? PositionToCover { get; set; }
+    public string? PositionToCover { get; set; }
 
-    public JobType? JobType { get; set; }
+    public string? JobType { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
@@ -27,15 +27,15 @@ public partial class JobPosition
 
     public int? NumberOfPositionsToCover { get; set; }
 
-    public WorkDay? WorkDay { get; set; }
+    public string? WorkDay { get; set; }
 
     public int? InternshipDuration { get; set; }
 
     public DateTime? TentativeStartDate { get; set; }
 
-    public string? FrameworkAgreement { get; set; }
-
     public string IdCompany { get; set; } = null!;
+
+    public int? State { get; set; }
 
     public virtual Company IdCompanyNavigation { get; set; } = null!;
 

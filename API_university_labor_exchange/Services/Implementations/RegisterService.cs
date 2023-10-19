@@ -23,7 +23,8 @@ namespace API_university_labor_exchange.Services.Implementations
                 Email = student.Email,
                 Username = username,
                 Password = student.Password, //Aca habria que hacer logica para hashear el password
-                UserType = "student"
+                UserType = "student",
+                State = student.State,
             };
 
             Student StudentData = new Student
@@ -47,7 +48,8 @@ namespace API_university_labor_exchange.Services.Implementations
                 Email = company.Email,
                 Username = company.SocialReason,
                 Password = company.Password, //Aca habria que hacer logica para hashear el password
-                UserType = "company"
+                UserType = "company",
+                State = company.State,
             };
 
             Company companyData = new Company

@@ -1,4 +1,7 @@
-﻿namespace API_university_labor_exchange.Models.CompanyDTOs
+﻿using API_university_labor_exchange.Enums;
+using System.Text.Json.Serialization;
+
+namespace API_university_labor_exchange.Models.CompanyDTOs
 {
     public class ReadProfileCompanyDTO
     {
@@ -14,5 +17,8 @@
 
         public string? Web { get; set; }
         public string? TelephoneNumber { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public State State { get; set; }
     }
 }

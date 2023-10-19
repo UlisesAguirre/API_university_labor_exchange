@@ -10,6 +10,7 @@ namespace API_university_labor_exchange.Profiles
         {
             CreateMap<CreateCareerDTO, Career>();
             CreateMap<Career, ReadCareerDTO>();
+            CreateMap<Career, ReadCareersForFormDTO>();
 
         }
     }
