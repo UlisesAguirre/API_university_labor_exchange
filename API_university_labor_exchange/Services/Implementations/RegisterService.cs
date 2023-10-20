@@ -1,5 +1,6 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
@@ -24,7 +25,7 @@ namespace API_university_labor_exchange.Services.Implementations
                 Username = username,
                 Password = student.Password, //Aca habria que hacer logica para hashear el password
                 UserType = "student",
-                State = student.State,
+                State = State.SinAsignar,
             };
 
             Student StudentData = new Student
@@ -49,7 +50,7 @@ namespace API_university_labor_exchange.Services.Implementations
                 Username = company.SocialReason,
                 Password = company.Password, //Aca habria que hacer logica para hashear el password
                 UserType = "company",
-                State = company.State,
+                State = State.SinAsignar
             };
 
             Company companyData = new Company
