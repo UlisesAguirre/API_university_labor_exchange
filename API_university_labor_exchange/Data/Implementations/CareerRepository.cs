@@ -32,5 +32,15 @@ namespace API_university_labor_exchange.Data.Implementations
             _context.Entry(updateCareer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.SaveChanges();
         }
+
+        public void DeleteCareer(int careerId)
+        {
+            var career = _context.Careers.Find(careerId);
+
+            if (career != null)
+            {
+                career.State = false;
+            }
+        }
     }
 }

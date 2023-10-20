@@ -51,7 +51,13 @@ namespace API_university_labor_exchange.Controllers
                 return Ok("Habilidad cargada con exito");
             }
 
-            return Ok("Habilidad modificada con exito");
+            CreateSkillDTO modifiedSkill = _skillService.UpdateSkill(skill);
+
+            if (modifiedSkill != null)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpDelete("DeleteSkill/{skillId}")]
@@ -61,8 +67,6 @@ namespace API_university_labor_exchange.Controllers
             return Ok("Habilidad borrada correctamente");
 
         }
-
-
 
     }
 }

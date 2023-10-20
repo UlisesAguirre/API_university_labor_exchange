@@ -66,7 +66,7 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public List<ReadJobPositionDto> GetAllInterships(List<ReadJobPositionDto> jobPosition)
         {
-            var allInterships = jobPosition.Where(j => j.JobType == JobType.Pasantía).ToList();
+            var allInterships = jobPosition.Where(j => j.JobType == JobType.Pasantia).ToList();
 
             return allInterships;
         }

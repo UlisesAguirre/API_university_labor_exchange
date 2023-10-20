@@ -1,4 +1,5 @@
-﻿using API_university_labor_exchange.Data.Interfaces;
+﻿using API_university_labor_exchange.Data.Implementations;
+using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models.CareerDTOs;
 using API_university_labor_exchange.Services.Interfaces;
@@ -38,10 +39,11 @@ namespace API_university_labor_exchange.Services.Implementations
         {
             Career newCareer = new Career
             {
-                Name= createCareerDTO.Name,
-                Abbreviation= createCareerDTO.Abbreviation,
+                Name = createCareerDTO.Name,
+                Abbreviation = createCareerDTO.Abbreviation,
                 CareerType = createCareerDTO.CareerType,
-                TotalSubjets = createCareerDTO.TotalSubjets
+                TotalSubjets = createCareerDTO.TotalSubjets,
+                State = true
             };
 
             _careerRepository.AddCareer(newCareer);
@@ -58,5 +60,13 @@ namespace API_university_labor_exchange.Services.Implementations
 
         }
 
+        public void DeleteCareer(int careerId)
+        {
+            if (careerId != null)
+            {
+                _careerRepository.DeleteCareer(careerId);
+                _careerRepository.SaveChanges();
+            }
+        }
     }
 }

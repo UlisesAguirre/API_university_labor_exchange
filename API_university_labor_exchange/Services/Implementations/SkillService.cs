@@ -37,9 +37,18 @@ namespace API_university_labor_exchange.Services.Implementations
         {
             Skill newSkill = new Skill();
             newSkill.SkillName = createSkillDTO.SkillName;
+            newSkill.State = true;
 
             _skillRepository.AddSkill(newSkill);
             _skillRepository.SaveChanges();
+
+        }
+
+        public CreateSkillDTO UpdateSkill(CreateSkillDTO updateSkill)
+        {
+            Skill modifiedSkill = _skillRepository.UpdateSkill(updateSkill);
+
+            return _mapper.Map<CreateSkillDTO>(modifiedSkill);
 
         }
 

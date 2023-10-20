@@ -9,13 +9,14 @@ namespace API_university_labor_exchange.Services.Interfaces
     public interface IStudentService
     {
         public ICollection<ReadAllStudentDTO> GetAllStudents();
+        List<ReadStudentsToAdmin> GetStudentsForAdmin();
         public ReadAllStudentDTO? GetStudent(int id);
         public void UpdateStudent(UpdateStudentDTO student, int id);
         ReadProfileStudentDTO GetProfile(int id);
         void UpdateSkills(List<StudentSkillsDto> skills, int id);
         public void AddCurriculum(IFormFile curriculum, int studentId);
         public bool DeleteCurriculum(int id);
-
         public Student GetCurriculum(int id);
+        void SetUserState(SetUserStateDTO user);
     }
 }

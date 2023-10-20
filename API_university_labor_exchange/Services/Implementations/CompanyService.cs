@@ -40,6 +40,25 @@ namespace API_university_labor_exchange.Services.Implementations
             return userCompany;
         }
 
+        public List<ReadCompaniesToAdmin> GetCompaniesForAdmin()
+
+        {
+            List<User> users = _userRepository.GetCompaniesForAdmin();
+
+            List<ReadCompaniesToAdmin> companies = _mapper.Map<List<ReadCompaniesToAdmin>>(users);
+
+            foreach (var company in companies)
+            {
+                var companyData = _companyRepository.GetCompany(company.IdUser);
+
+                company.Cuit = companyData.Cuit;
+                company.SocialReason = companyData.SocialReason;
+
+            }
+
+            return companies;
+        }
+
         public void UpdateCompany(UpdateCompanyDTO company, int id)
         {
             var CompanyToUpdate = _companyRepository.GetCompany(id);
