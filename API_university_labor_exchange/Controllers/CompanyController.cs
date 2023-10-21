@@ -2,6 +2,8 @@
 using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.CompanyDTOs;
 using API_university_labor_exchange.Models.JobPositionDTOs;
+using API_university_labor_exchange.Models.StudentDTOs;
+using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,14 @@ namespace API_university_labor_exchange.Controllers
         public ActionResult<ICollection<ReadAllCompanyDTO>> GetAllCompanies()
         {
             var companies = _companyService.GetAllCompanies(); 
+            return Ok(companies);
+        }
+
+        [HttpGet("GetCompaniesToAdmin")]
+        public ActionResult<ICollection<ReadCompaniesToAdmin>> GetCompaniesForAdmin()
+        {
+            var companies = _companyService.GetCompaniesForAdmin();
+
             return Ok(companies);
         }
 

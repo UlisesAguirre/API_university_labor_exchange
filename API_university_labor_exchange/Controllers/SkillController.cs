@@ -45,11 +45,28 @@ namespace API_university_labor_exchange.Controllers
         [HttpPost("CreateSkill")]
         public ActionResult AddSkill(CreateSkillDTO skill)
         {
-            _skillService.AddSkill(skill);
-            return Ok("Habilidad cargada con exito");
+            if(skill.IdSkill == 0)
+            {
+                _skillService.AddSkill(skill);
+                return Ok("Habilidad cargada con exito");
+            }
+
+            CreateSkillDTO modifiedSkill = _skillService.UpdateSkill(skill);
+
+            if (modifiedSkill != null)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
+        [HttpDelete("DeleteSkill/{skillId}")]
+        public ActionResult DeleteSkill([FromRoute] int skillId)
+        {
+            _skillService.DeleteSkill(skillId);
+            return Ok("Habilidad borrada correctamente");
 
+        }
 
     }
 }

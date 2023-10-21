@@ -11,5 +11,8 @@ namespace API_university_labor_exchange.Services.Interfaces
 
         public ICollection<ReadSkillDTO> GetSkillsForForm();
 
+        CreateSkillDTO UpdateSkill(CreateSkillDTO updateSkill);
+
+        void DeleteSkill(int skillId);
     }
 }

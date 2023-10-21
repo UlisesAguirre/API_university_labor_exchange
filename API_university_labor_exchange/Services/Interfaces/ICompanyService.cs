@@ -7,6 +7,7 @@ namespace API_university_labor_exchange.Services.Interfaces
     {
         public IEnumerable<ReadAllCompanyDTO> GetAllCompanies();
         public ReadAllCompanyDTO? GetCompany(int id);
+        List<ReadCompaniesToAdmin> GetCompaniesForAdmin();
         public void UpdateCompany(UpdateCompanyDTO company, int id);
         ReadProfileCompanyDTO GetProfile(int id);
     }

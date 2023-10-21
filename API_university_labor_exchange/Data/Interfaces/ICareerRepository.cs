@@ -7,11 +7,8 @@ namespace API_university_labor_exchange.Data.Interfaces
         public IEnumerable<Career> GetAllCareers();
         public Career? GetCareerBy(int careerId);
         public void AddCareer(Career newCareer);
-
+        void UpdateCareer(Career updateCareer);
         public ICollection<Career> GetCareersForForm();
-
-        //public void UpdateCareer(Career careerToUpdate);
-        //public void DeleteCareer(int careerId);
-
+        void DeleteCareer(int careerId);
     }
 }

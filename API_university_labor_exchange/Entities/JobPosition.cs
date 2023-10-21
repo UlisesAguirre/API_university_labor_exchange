@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API_university_labor_exchange.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
@@ -35,7 +36,7 @@ public partial class JobPosition
 
     public string IdCompany { get; set; } = null!;
 
-    public int? State { get; set; }
+    public State State { get; set; }
 
     public virtual Company IdCompanyNavigation { get; set; } = null!;
 

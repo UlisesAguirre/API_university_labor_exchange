@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Models.CareerDTOs;
+using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,10 +45,23 @@ namespace API_university_labor_exchange.Controllers
         [HttpPost ("CreateCareer")] 
         public ActionResult AddCareer (CreateCareerDTO career)
         {
-            _careerService.AddCareer(career);
-            return Ok("Carrera cargada con exito");
+            if(career.IdCarrer == 0)
+            {
+                _careerService.AddCareer(career);
+                return Ok("Carrera cargada con exito");
+            }
+
+            _careerService.UpdateCareer(career);
+            return Ok("Carrera modificada con exito");
         }
 
+        [HttpDelete("DeleteCareer/{careerId}")]
+        public ActionResult DeleteCareer([FromRoute] int careerId)
+        {
+            _careerService.DeleteCareer(careerId);
+            return Ok("Carrera borrada correctamente");
+
+        }
 
     }
 }
