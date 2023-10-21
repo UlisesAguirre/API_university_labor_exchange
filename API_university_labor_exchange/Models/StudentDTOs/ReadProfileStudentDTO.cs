@@ -36,7 +36,7 @@ namespace API_university_labor_exchange.Models.StudentDTOs
 
         public double? Average { get; set; }
 
-        //public int? IdCarrer { get; set; }
+        //public int? IdCareer { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public State State { get; set; }

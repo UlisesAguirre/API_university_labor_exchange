@@ -63,7 +63,7 @@ public partial class Student
 
     public int IdUser { get; set; }
 
-    public int? IdCarrer { get; set; }
+    public int? IdCareer { get; set; }
 
     public bool? EmailValidation { get; set; }
 

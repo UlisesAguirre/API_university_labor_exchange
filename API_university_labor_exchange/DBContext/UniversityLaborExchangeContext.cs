@@ -40,7 +40,7 @@ public partial class UniversityLaborExchangeContext : DbContext
     {
         modelBuilder.Entity<Career>(entity =>
         {
-            entity.HasKey(e => e.IdCarrer);
+            entity.HasKey(e => e.IdCareer);
 
             entity.Property(e => e.Abbreviation)
                 .HasMaxLength(50)
@@ -267,7 +267,7 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .HasConversion(v => v.ToString(), v => (Turn)Enum.Parse(typeof(Turn), v));
 
             entity.HasOne(d => d.IdCarrerNavigation).WithMany(p => p.Students)
-                .HasForeignKey(d => d.IdCarrer)
+                .HasForeignKey(d => d.IdCareer)
                 .HasConstraintName("FK_Students_Careers");
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Students)

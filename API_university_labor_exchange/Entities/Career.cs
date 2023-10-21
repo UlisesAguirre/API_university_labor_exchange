@@ -5,7 +5,7 @@ namespace API_university_labor_exchange.Entities;
 
 public partial class Career
 {
-    public int IdCarrer { get; set; }
+    public int IdCareer { get; set; }
 
     public string? Name { get; set; }
 
