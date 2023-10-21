@@ -33,15 +33,15 @@ namespace API_university_labor_exchange.Services.Implementations
             _jobPositionRepository.AddJobPosition(newJobPosition);
         }
 
-        public List<ReadJobPositionDto> GetAllJobPosition()
+        public ICollection<ReadJobPositionDto> GetAllJobPosition()
         {
-            List<JobPosition> allJobPosition = _jobPositionRepository.GetAllJobPosition();
+            ICollection<JobPosition> allJobPosition = _jobPositionRepository.GetAllJobPosition();
 
-            List<ReadJobPositionDto> allJobPositionDTO = _mapper.Map<List<ReadJobPositionDto>>(allJobPosition);
+            ICollection<ReadJobPositionDto> allJobPositionDTO = _mapper.Map<ICollection<ReadJobPositionDto>>(allJobPosition);
 
             foreach (var intership in allJobPositionDTO)
             {
-                foreach(int idSkill in intership.JobPostionsSkills.Select(s => s.IdSkill))
+                foreach (int idSkill in intership.JobPostionsSkills.Select(s => s.IdSkill))
                 {
                     Skill skill = _skillRepository.GetSkill(idSkill);
 
@@ -51,12 +51,12 @@ namespace API_university_labor_exchange.Services.Implementations
                     }
                 }
 
-                foreach(int idCareer in intership.JobPositionsCareers.Select(s => s.IdCarrer))
+                foreach (int idCareer in intership.JobPositionsCareers.Select(s => s.IdCareer))
                 {
                     Career career = _careerRepository.GetCareerBy(idCareer);
                     if (career != null)
                     {
-                        intership.JobPositionsCareers.FirstOrDefault(s=> s.IdCarrer == idCareer).Name = career.Name;
+                        intership.JobPositionsCareers.FirstOrDefault(s => s.IdCareer == idCareer).Name = career.Name;
                     }
                 }
             }
@@ -64,16 +64,16 @@ namespace API_university_labor_exchange.Services.Implementations
             return allJobPositionDTO;
         }
 
-        public List<ReadJobPositionDto> GetAllInterships(List<ReadJobPositionDto> jobPosition)
+        public ICollection<ReadJobPositionDto> GetAllInterships(ICollection<ReadJobPositionDto> jobPosition)
         {
-            var allInterships = jobPosition.Where(j => j.JobType == JobType.Pasantia).ToList();
+            var allInterships = jobPosition.Where(j => j.JobType == "Pasantia").ToList();
 
             return allInterships;
         }
 
-        public List<ReadJobPositionDto> GetAllJobs(List<ReadJobPositionDto> jobPosition)
+        public ICollection<ReadJobPositionDto> GetAllJobs(ICollection<ReadJobPositionDto> jobPosition)
         {
-            var allJobs = jobPosition.Where(j => j.JobType == JobType.Trabajo).ToList(); 
+            var allJobs = jobPosition.Where(j => j.JobType == "Trabajo").ToList(); 
 
             return allJobs;
         }

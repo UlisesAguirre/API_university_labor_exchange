@@ -2,7 +2,7 @@
 {
     public class CareersListDTO
     {
-        public int IdCarrer { get; set; }
+        public int IdCareer { get; set; }
         public string Name { get; set; }
     }
 }

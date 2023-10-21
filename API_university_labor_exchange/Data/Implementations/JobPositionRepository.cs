@@ -15,7 +15,7 @@ namespace API_university_labor_exchange.Data.Implementations
             _context.SaveChanges();
         }
 
-        public List<JobPosition> GetAllJobPosition()
+        public ICollection<JobPosition> GetAllJobPosition()
         {
             return _context.JobPositions.Include(j => j.JobPositionsCareers)
                 .Include(j => j.JobPostionsSkills).ToList();

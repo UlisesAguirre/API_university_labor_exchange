@@ -5,8 +5,8 @@ namespace API_university_labor_exchange.Services.Interfaces
     public interface IJobPositionService
     {
         public void AddJobPosition(CreateJobPositionDTO jobPositionDTO);
-        List<ReadJobPositionDto> GetAllJobPosition();
-        List<ReadJobPositionDto> GetAllInterships(List<ReadJobPositionDto> jobPosition);
-        List<ReadJobPositionDto> GetAllJobs(List<ReadJobPositionDto> jobPosition);
+        ICollection<ReadJobPositionDto> GetAllJobPosition();
+        ICollection<ReadJobPositionDto> GetAllInterships(ICollection<ReadJobPositionDto> jobPosition);
+        ICollection<ReadJobPositionDto> GetAllJobs(ICollection<ReadJobPositionDto> jobPosition);
     }
 }
