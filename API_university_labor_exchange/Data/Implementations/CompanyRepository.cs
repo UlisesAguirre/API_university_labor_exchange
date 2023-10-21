@@ -12,6 +12,8 @@ namespace API_university_labor_exchange.Data.Implementations
         {
             return _context.Companies.ToList();
         }
+
+
         public Company? GetCompany(int id) 
         {
             return _context.Companies.FirstOrDefault(c => c.IdUser == id);

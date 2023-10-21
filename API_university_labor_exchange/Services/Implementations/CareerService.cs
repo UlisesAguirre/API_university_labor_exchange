@@ -1,4 +1,5 @@
-﻿using API_university_labor_exchange.Data.Interfaces;
+﻿using API_university_labor_exchange.Data.Implementations;
+using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models.CareerDTOs;
 using API_university_labor_exchange.Services.Interfaces;
@@ -36,16 +37,36 @@ namespace API_university_labor_exchange.Services.Implementations
         }
         public ReadCareerDTO AddCareer(CreateCareerDTO createCareerDTO)
         {
-            //Agregar validaciones
-            var newCareer = _mapper.Map<Career>(createCareerDTO);
+            Career newCareer = new Career
+            {
+                Name = createCareerDTO.Name,
+                Abbreviation = createCareerDTO.Abbreviation,
+                CareerType = createCareerDTO.CareerType,
+                TotalSubjets = createCareerDTO.TotalSubjets,
+                State = true
+            };
+
             _careerRepository.AddCareer(newCareer);
             if (_careerRepository.SaveChanges()){
                 return _mapper.Map<ReadCareerDTO>(newCareer);
             }
             return null;
-           
+        }
+
+        public void UpdateCareer(CreateCareerDTO createCareerDTO)
+        {
+            var updateCareer = _mapper.Map<Career>(createCareerDTO);
+            _careerRepository.UpdateCareer(updateCareer);
 
         }
 
+        public void DeleteCareer(int careerId)
+        {
+            if (careerId != null)
+            {
+                _careerRepository.DeleteCareer(careerId);
+                _careerRepository.SaveChanges();
+            }
+        }
     }
 }

@@ -1,16 +1,17 @@
-﻿using API_university_labor_exchange.Models.Student;
+﻿using API_university_labor_exchange.Models;
+using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using System.Security.Claims;
 
 namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -24,6 +25,14 @@ namespace API_university_labor_exchange.Controllers
         public ActionResult<ICollection<ReadAllStudentDTO>> GetAllStudents()
         {
             var students = _studentService.GetAllStudents();
+            return Ok(students);
+        }
+
+        [HttpGet("GetStudentsToAdmin")]
+        public ActionResult<ICollection<ReadStudentsToAdmin>> GetStudentsForAdmin()
+        {
+            var students = _studentService.GetStudentsForAdmin();
+
             return Ok(students);
         }
 
@@ -162,6 +171,14 @@ namespace API_university_labor_exchange.Controllers
                 return File(student.Curriculum, "application/pdf", $"{student.Name}_{student.LastName}_CV.pdf");
 
             return NotFound("No tiene curriculum");
+        }
+
+        [HttpPut("SetUserState")]
+
+        public ActionResult SetUserState(SetUserStateDTO user)
+        {
+            _studentService.SetUserState(user);
+            return Ok();
         }
     }
 }

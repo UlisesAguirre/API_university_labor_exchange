@@ -2,13 +2,13 @@
 using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models;
-using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.SkillDTOs;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
 using Azure.Core;
+using Microsoft.CodeAnalysis.CSharp;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace API_university_labor_exchange.Services.Implementations
@@ -33,6 +33,23 @@ namespace API_university_labor_exchange.Services.Implementations
             var students = _studentRepository.GetAllStudents();
 
             return _mapper.Map<ICollection<ReadAllStudentDTO>>(students);
+        }
+
+        public List<ReadStudentsToAdmin> GetStudentsForAdmin()
+
+        { 
+            List<User> users = _userRepository.GetStudentsForAdmin();
+
+            List<ReadStudentsToAdmin> students = _mapper.Map<List<ReadStudentsToAdmin>>(users);
+
+            foreach (var student in students)
+            {
+                var studentData = _studentRepository.GetStudent(student.IdUser);
+                student.Legajo = studentData.Legajo;
+
+            }
+
+            return students;
         }
 
         public ReadAllStudentDTO? GetStudent(int id)
@@ -135,6 +152,11 @@ namespace API_university_labor_exchange.Services.Implementations
         public Student GetCurriculum(int id)
         { 
            return _studentRepository.GetStudent(id);
+        }
+
+        public void SetUserState(SetUserStateDTO user)
+        {
+            _userRepository.SetUserState(user);
         }
     }
 }

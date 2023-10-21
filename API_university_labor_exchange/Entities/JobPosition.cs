@@ -36,7 +36,7 @@ public partial class JobPosition
 
     public string IdCompany { get; set; } = null!;
 
-    public State? State { get; set; }
+    public State State { get; set; }
 
     public virtual Company IdCompanyNavigation { get; set; } = null!;
 

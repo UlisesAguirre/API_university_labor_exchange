@@ -2,13 +2,13 @@
 using API_university_labor_exchange.Models.JobPositionDTOs;
 using AutoMapper;
 
-namespace API_university_labor_exchange.Profiles
+public class JobPositionProfile : Profile
 {
-    public class JobPositionProfile: Profile 
+    public JobPositionProfile()
     {
-        public JobPositionProfile ()
-        { 
-            CreateMap<CreateJobPositionDTO, JobPosition>();
-        }
-}
+        CreateMap<CreateJobPositionDTO, JobPosition>();
+
+        CreateMap<ReadJobPositionDto, JobPosition>();
+        CreateMap<JobPosition, ReadJobPositionDto>();
+    }
 }

@@ -2,6 +2,7 @@
 {
     public class CreateSkillDTO
     {
+        public int IdSkill { get; set; }
         public string SkillName { get; set; }
 
         public bool State { get; set; } = true;

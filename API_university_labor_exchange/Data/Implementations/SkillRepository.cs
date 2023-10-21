@@ -1,6 +1,7 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.DBContext;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models.SkillDTOs;
 
 namespace API_university_labor_exchange.Data.Implementations
 {
@@ -25,6 +26,32 @@ namespace API_university_labor_exchange.Data.Implementations
         public void AddSkill(Skill newSkill)
         {
             _context.Add(newSkill);
+        }
+
+        public Skill UpdateSkill(CreateSkillDTO updateSkill)
+        {
+
+            Skill existingSkill = _context.Skills.FirstOrDefault(s => s.IdSkill == updateSkill.IdSkill);
+
+            if (existingSkill == null)
+            {
+                return null;
+            }
+
+            existingSkill.SkillName = updateSkill.SkillName;
+            _context.SaveChanges();
+
+            return existingSkill;
+        }
+
+        public void DeleteSkill(int? skillId)
+        {
+            var skill = _context.Skills.Find(skillId);
+
+            if (skill != null)
+            {
+                skill.State = false;
+            }
         }
     }
 }
