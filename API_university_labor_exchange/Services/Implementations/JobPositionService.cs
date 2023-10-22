@@ -1,5 +1,6 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models.JobPositionDTOs;
 using API_university_labor_exchange.Models.JobPositionDTOs.SkillsCareerListDto;
 using API_university_labor_exchange.Services.Interfaces;
@@ -28,6 +29,7 @@ namespace API_university_labor_exchange.Services.Implementations
         {
 
             JobPosition newJobPosition = _mapper.Map<JobPosition>(jobPositionDTO);
+            newJobPosition.State = State.SinAsignar;
             newJobPosition.JobPositionsCareers = _mapper.Map<List<JobPositionsCareer>>(jobPositionDTO.jobPositionCareer);
             newJobPosition.JobPostionsSkills = _mapper.Map<List<JobPostionsSkill>>(jobPositionDTO.jobPositionSkill);
             _jobPositionRepository.AddJobPosition(newJobPosition);

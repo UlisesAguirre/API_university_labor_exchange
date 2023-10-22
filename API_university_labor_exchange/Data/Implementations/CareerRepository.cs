@@ -20,7 +20,7 @@ namespace API_university_labor_exchange.Data.Implementations
         }
         public Career? GetCareerBy(int careerId)
         {
-            return _context.Careers.FirstOrDefault(c => c.IdCarrer == careerId);
+            return _context.Careers.FirstOrDefault(c => c.IdCareer == careerId);
         }
         public void AddCareer(Career newCareer)
         {

@@ -4,7 +4,7 @@ namespace API_university_labor_exchange.Models.CareerDTOs
 {
     public class CreateCareerDTO
     {
-        public int IdCarrer { get; set; }
+        public int IdCareer { get; set; }
 
         public string Name { get; set; }
 

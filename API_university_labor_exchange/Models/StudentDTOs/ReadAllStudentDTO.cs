@@ -68,7 +68,7 @@ namespace API_university_labor_exchange.Models.Student
 
         public int IdUser { get; set; }
 
-        public int IdCarrer { get; set; }
+        public int IdCareer { get; set; }
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public State State { get; set; }
