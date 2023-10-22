@@ -80,5 +80,47 @@ namespace API_university_labor_exchange.Services.Implementations
             return allJobs;
         }
 
+
+        public ICollection<ReadJobPositionCompanyDTO> GetCompanyJobPositions(string idCompany)
+        {
+            var jobPosition = _jobPositionRepository.GetCompanyJobPositions(idCompany);
+
+            var jobPositionDto = _mapper.Map<ICollection<ReadJobPositionCompanyDTO>>(jobPosition);
+
+            return jobPositionDto;                 
+
+        }
+
+        public ICollection<ReadJobPositionDto> GetJobPosition()
+        {
+            ICollection<JobPosition> allJobPosition = _jobPositionRepository.GetJobPositions();
+
+            ICollection<ReadJobPositionDto> allJobPositionDTO = _mapper.Map<ICollection<ReadJobPositionDto>>(allJobPosition);
+
+            foreach (var intership in allJobPositionDTO)
+            {
+                foreach (int idSkill in intership.JobPostionsSkills.Select(s => s.IdSkill))
+                {
+                    Skill skill = _skillRepository.GetSkill(idSkill);
+
+                    if (skill != null)
+                    {
+                        intership.JobPostionsSkills.FirstOrDefault(s => s.IdSkill == idSkill).SkillName = skill.SkillName;
+                    }
+                }
+
+                foreach (int idCareer in intership.JobPositionsCareers.Select(s => s.IdCareer))
+                {
+                    Career career = _careerRepository.GetCareerBy(idCareer);
+                    if (career != null)
+                    {
+                        intership.JobPositionsCareers.FirstOrDefault(s => s.IdCareer == idCareer).Name = career.Name;
+                    }
+                }
+            }
+
+            return allJobPositionDTO;
+        }
+
     }
 }
