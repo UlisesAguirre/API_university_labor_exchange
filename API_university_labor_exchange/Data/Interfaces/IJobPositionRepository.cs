@@ -6,6 +6,9 @@ namespace API_university_labor_exchange.Data.Interfaces
     {
         public void AddJobPosition(JobPosition jobPosition);
         ICollection<JobPosition> GetAllJobPosition();
+        public ICollection<JobPosition> GetCompanyJobPositions(string idCompany);
+
+        public ICollection<JobPosition> GetJobPositions();
 
     }
 }
