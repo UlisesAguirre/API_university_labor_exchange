@@ -10,5 +10,7 @@ namespace API_university_labor_exchange.Data.Interfaces
 
         public ICollection<JobPosition> GetJobPositions();
 
+        public void AddStudentJobPosition(StudentsJobPosition studentsJobPosition);
+
     }
 }

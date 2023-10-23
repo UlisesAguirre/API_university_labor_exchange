@@ -122,5 +122,17 @@ namespace API_university_labor_exchange.Services.Implementations
             return allJobPositionDTO;
         }
 
+        public void AddStudentJobPosition(string legajo, int idJobPosition)
+        {
+            StudentsJobPosition newStudentJobPosition = new StudentsJobPosition();
+            
+            newStudentJobPosition.Legajo = legajo;
+            newStudentJobPosition.IdJobPosition = idJobPosition;
+
+           
+            _jobPositionRepository.AddStudentJobPosition(newStudentJobPosition);
+
+        }
+
     }
 }

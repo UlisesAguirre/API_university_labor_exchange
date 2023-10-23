@@ -24,7 +24,7 @@ public class JobPositionProfile : Profile
             .ForMember(dest => dest.StudentsJobPositions, opt => opt.MapFrom(src => src.StudentsJobPositions.Select(sj => new StudentsJobPositionDTO
             {
                 IdJobPosition = sj.IdJobPosition,
-                Legajo = sj.LegajoNavigation.Legajo,
+                IdUser = sj.LegajoNavigation.IdUser,
                 Name = sj.LegajoNavigation.Name,
                 LastName = sj.LegajoNavigation.LastName,
                 Email = sj.LegajoNavigation.IdUserNavigation.Email
