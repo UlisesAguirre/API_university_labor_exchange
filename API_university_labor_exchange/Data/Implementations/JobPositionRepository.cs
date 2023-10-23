@@ -55,6 +55,7 @@ namespace API_university_labor_exchange.Data.Implementations
                 .Where(jp => jp.State == Enums.State.Habilitado || (jp.JobType == "Trabajo" && jp.State != Enums.State.Deshabilitado))
                 .Include(jp => jp.JobPositionsCareers)
                 .Include(jp => jp.JobPostionsSkills)
+                .Include(jp => jp.StudentsJobPositions)
                 .ToList();
         }
 

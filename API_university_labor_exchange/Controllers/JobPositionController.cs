@@ -42,11 +42,12 @@ namespace API_university_labor_exchange.Controllers
         [HttpGet("GetJobPositions")]
         public ActionResult<ICollection<ReadJobPositionDto>> GetJobPositions()
         {
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            //if (!int.TryParse(userIdClaim, out int studentId))
-            //    return Unauthorized();
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            var jobPosition = _jobPositionService.GetJobPosition();
+            var student = _studentService.GetStudent(Int32.Parse(userIdClaim));
+
+            var jobPosition = _jobPositionService.GetJobPosition(student.Legajo);
 
             if (jobPosition != null)
                 return Ok(jobPosition);

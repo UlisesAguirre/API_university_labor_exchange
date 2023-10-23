@@ -44,5 +44,7 @@ namespace API_university_labor_exchange.Models.JobPositionDTOs
 
         public virtual List<SkillsListDTO> JobPostionsSkills { get; set; } = new List<SkillsListDTO>();
 
+        public virtual ICollection<StudentsListDTO> StudentsJobPositions { get; set; } = new List<StudentsListDTO>();
+
     }
 }
