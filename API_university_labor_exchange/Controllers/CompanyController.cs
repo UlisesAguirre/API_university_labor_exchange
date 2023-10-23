@@ -122,13 +122,11 @@ namespace API_university_labor_exchange.Controllers
         [HttpGet("GetCompanyJobPositionsInfo")]
         public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetCompanyJobPositionsInfo()
         {
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            //if (!int.TryParse(userIdClaim, out int companyId))
-            //    return Unauthorized();
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(userIdClaim, out int companyId))
+                return Unauthorized();
 
-            //var cuit = _companyService.GetCompany(companyId).Cuit;
-
-            var cuit = "20-00000000-4";
+            var cuit = _companyService.GetCompany(companyId).Cuit;
 
             var jobPosition = _jobPositionservice.GetCompanyJobPositions(cuit);
             
