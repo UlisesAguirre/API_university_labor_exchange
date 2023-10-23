@@ -14,5 +14,7 @@ namespace API_university_labor_exchange.Services.Interfaces
 
         public ICollection<ReadJobPositionDto> GetJobPosition();
 
+        void SetJobPositionState(SetJobPositionStateDTO jobPosition);
+
     }
 }

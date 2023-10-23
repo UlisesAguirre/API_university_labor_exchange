@@ -7,5 +7,6 @@ namespace API_university_labor_exchange.Data.Interfaces
         public IEnumerable<Company> GetAllCompanies();
         public Company? GetCompany(int id);
         public void UpdateCompany(Company company);
+        Company? GetCompanyByCUIT(string cuit);
     }
 }

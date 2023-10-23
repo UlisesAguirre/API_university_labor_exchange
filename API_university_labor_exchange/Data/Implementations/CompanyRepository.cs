@@ -24,6 +24,11 @@ namespace API_university_labor_exchange.Data.Implementations
             //_context.Companies.Update(company);
 
         }
+
+        public Company? GetCompanyByCUIT(string cuit)
+        {
+            return _context.Companies.FirstOrDefault(c => c.Cuit == cuit);
+        }
         
     }
 }

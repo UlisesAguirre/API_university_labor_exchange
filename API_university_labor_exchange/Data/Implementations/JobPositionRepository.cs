@@ -1,6 +1,8 @@
 ﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.DBContext;
 using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models;
+using API_university_labor_exchange.Models.JobPositionDTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Data;
@@ -19,8 +21,11 @@ namespace API_university_labor_exchange.Data.Implementations
 
         public ICollection<JobPosition> GetAllJobPosition()
         {
-            return _context.JobPositions.Include(j => j.JobPositionsCareers)
-                .Include(j => j.JobPostionsSkills).ToList();
+            return _context.JobPositions
+                .Include(j => j.JobPositionsCareers)
+                .Include(j => j.JobPostionsSkills)
+                .OrderByDescending(j => j.State)
+                .ToList();
         }
 
         public ICollection<JobPosition> GetCompanyJobPositions(string idCompany)
@@ -51,6 +56,19 @@ namespace API_university_labor_exchange.Data.Implementations
                 .Include(jp => jp.JobPositionsCareers)
                 .Include(jp => jp.JobPostionsSkills)
                 .ToList();
+        }
+
+        public void SetJobPositionState(SetJobPositionStateDTO jobPosition)
+        {
+            var findedJobPosition = _context.JobPositions.FirstOrDefault(j => j.IdJobPosition == jobPosition.IdJobPosition);
+
+            if (findedJobPosition != null)
+            {
+                findedJobPosition.State = jobPosition.State;
+            }
+
+            _context.SaveChanges();
+
         }
     }
 }

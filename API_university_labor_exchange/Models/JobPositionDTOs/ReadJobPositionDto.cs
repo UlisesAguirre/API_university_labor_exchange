@@ -36,6 +36,8 @@ namespace API_university_labor_exchange.Models.JobPositionDTOs
 
         public string IdCompany { get; set; } = null!;
 
+        public string CompanyName { get; set; }
+
         public State State { get; set; }
 
         public virtual List<CareersListDTO> JobPositionsCareers { get; set; } = new List<CareersListDTO>();
