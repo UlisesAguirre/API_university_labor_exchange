@@ -11,8 +11,10 @@ namespace API_university_labor_exchange.Services.Interfaces
         ICollection<ReadJobPositionDto> GetAllInterships(ICollection<ReadJobPositionDto> jobPosition);
         ICollection<ReadJobPositionDto> GetAllJobs(ICollection<ReadJobPositionDto> jobPosition);
         public ICollection<ReadJobPositionCompanyDTO> GetCompanyJobPositions(string idCompany);
-        public ICollection<ReadJobPositionDto> GetJobPosition();
+        public ICollection<ReadJobPositionDto> GetJobPosition(string legajo);
         public void AddStudentJobPosition(string legajo, int idJobPosition);
+
+        void SetJobPositionState(SetJobPositionStateDTO jobPosition);
 
     }
 }
