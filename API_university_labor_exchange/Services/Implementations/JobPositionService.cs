@@ -34,7 +34,7 @@ namespace API_university_labor_exchange.Services.Implementations
         {
 
             JobPosition newJobPosition = _mapper.Map<JobPosition>(jobPositionDTO);
-            newJobPosition.State = State.SinAsignar;
+            newJobPosition.State = newJobPosition.JobType == "Pasantia" ?  State.SinAsignar : State.Habilitado;
             newJobPosition.JobPositionsCareers = _mapper.Map<List<JobPositionsCareer>>(jobPositionDTO.jobPositionCareer);
             newJobPosition.JobPostionsSkills = _mapper.Map<List<JobPostionsSkill>>(jobPositionDTO.jobPositionSkill);
             _jobPositionRepository.AddJobPosition(newJobPosition);

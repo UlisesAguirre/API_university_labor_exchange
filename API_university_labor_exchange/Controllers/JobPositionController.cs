@@ -40,7 +40,7 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetJobPositions")]
-        public ActionResult<ICollection<ReadJobPositionDto>> GetJobPositions()
+        public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetJobPositions()
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
