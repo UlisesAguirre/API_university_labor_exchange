@@ -52,5 +52,11 @@ namespace API_university_labor_exchange.Data.Implementations
                 .Include(jp => jp.JobPostionsSkills)
                 .ToList();
         }
+
+        public void AddStudentJobPosition(StudentsJobPosition studentsJobPosition)
+        {
+            _context.StudentsJobPositions.Add(studentsJobPosition);
+            _context.SaveChanges();
+        }
     }
 }
