@@ -1,4 +1,5 @@
 ﻿using API_university_labor_exchange.Entities;
+using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.JobPositionDTOs;
 using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
@@ -41,16 +42,25 @@ namespace API_university_labor_exchange.Controllers
         [HttpGet("GetJobPositions")]
         public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetJobPositions()
         {
-            //var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            //if (!int.TryParse(userIdClaim, out int studentId))
-            //    return Unauthorized();
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            var jobPosition = _jobPositionService.GetJobPosition();
+            var student = _studentService.GetStudent(Int32.Parse(userIdClaim));
+
+            var jobPosition = _jobPositionService.GetJobPosition(student.Legajo);
 
             if (jobPosition != null)
                 return Ok(jobPosition);
             return NotFound();
 
+        }
+
+        [HttpPut("SetJobPositionState")]
+
+        public ActionResult SetJobPositionState(SetJobPositionStateDTO jobPosition)
+        {
+            _jobPositionService.SetJobPositionState(jobPosition);
+            return Ok();
         }
 
         [HttpPost("AddStudentJobPosition")]

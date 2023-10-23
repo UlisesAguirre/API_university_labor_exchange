@@ -21,12 +21,18 @@ namespace API_university_labor_exchange.Data.Implementations
 
         public List<User> GetStudentsForAdmin()
         {
-            return _context.Users.Where(u => u.UserType == "student").ToList(); 
+            return _context.Users
+                .Where(u => u.UserType == "student")
+                .OrderByDescending(j => j.State)
+                .ToList(); 
         }
 
         public List<User> GetCompaniesForAdmin()
         {
-            return _context.Users.Where(u => u.UserType == "company").ToList();
+            return _context.Users
+                .Where(u => u.UserType == "company")
+                .OrderByDescending(j => j.State)
+                .ToList();
         }
 
         public void SetUserState(SetUserStateDTO user)
