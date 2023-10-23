@@ -70,5 +70,11 @@ namespace API_university_labor_exchange.Data.Implementations
             _context.SaveChanges();
 
         }
+
+        public void AddStudentJobPosition(StudentsJobPosition studentsJobPosition)
+        {
+            _context.StudentsJobPositions.Add(studentsJobPosition);
+            _context.SaveChanges();
+        }
     }
 }

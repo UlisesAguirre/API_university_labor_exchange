@@ -149,15 +149,16 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpGet("GetCurriculum/{id}")]
-        [Authorize(Roles = "student")]
+        [Authorize(Roles = "student, company")]
         public ActionResult GetCurriculum([FromRoute] int id)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (!int.TryParse(userIdClaim, out int studentId))
+            if (!int.TryParse(userIdClaim, out int userId))
                 return Unauthorized();
 
-            if (id != studentId)
+            if ((userRole == "student" && id != userId) || userRole != "company")
             {
                 return Forbid();
             }
