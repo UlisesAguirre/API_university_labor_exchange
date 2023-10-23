@@ -91,35 +91,13 @@ namespace API_university_labor_exchange.Services.Implementations
 
         }
 
-        public ICollection<ReadJobPositionDto> GetJobPosition()
+        public ICollection<ReadJobPositionCompanyDTO> GetJobPosition()
         {
-            ICollection<JobPosition> allJobPosition = _jobPositionRepository.GetJobPositions();
+            ICollection<JobPosition> jobPosition = _jobPositionRepository.GetJobPositions();
 
-            ICollection<ReadJobPositionDto> allJobPositionDTO = _mapper.Map<ICollection<ReadJobPositionDto>>(allJobPosition);
+            var jobPositionDto = _mapper.Map<ICollection<ReadJobPositionCompanyDTO>>(jobPosition);
 
-            foreach (var intership in allJobPositionDTO)
-            {
-                foreach (int idSkill in intership.JobPostionsSkills.Select(s => s.IdSkill))
-                {
-                    Skill skill = _skillRepository.GetSkill(idSkill);
-
-                    if (skill != null)
-                    {
-                        intership.JobPostionsSkills.FirstOrDefault(s => s.IdSkill == idSkill).SkillName = skill.SkillName;
-                    }
-                }
-
-                foreach (int idCareer in intership.JobPositionsCareers.Select(s => s.IdCareer))
-                {
-                    Career career = _careerRepository.GetCareerBy(idCareer);
-                    if (career != null)
-                    {
-                        intership.JobPositionsCareers.FirstOrDefault(s => s.IdCareer == idCareer).Name = career.Name;
-                    }
-                }
-            }
-
-            return allJobPositionDTO;
+            return jobPositionDto;
         }
 
         public void AddStudentJobPosition(string legajo, int idJobPosition)

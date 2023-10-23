@@ -48,8 +48,13 @@ namespace API_university_labor_exchange.Data.Implementations
         {
             return _context.JobPositions
                 .Where(jp => jp.State == Enums.State.Habilitado || (jp.JobType == "Trabajo" && jp.State != Enums.State.Deshabilitado))
-                .Include(jp => jp.JobPositionsCareers)
-                .Include(jp => jp.JobPostionsSkills)
+                 .Include(j => j.JobPostionsSkills)
+                    .ThenInclude(js => js.IdSkillNavigation)
+                .Include(j => j.JobPositionsCareers)
+                    .ThenInclude(jc => jc.IdCareerNavigation)
+                .Include(j => j.StudentsJobPositions)
+                    .ThenInclude(sj => sj.LegajoNavigation)
+                    .ThenInclude(ss => ss.IdUserNavigation)
                 .ToList();
         }
 
