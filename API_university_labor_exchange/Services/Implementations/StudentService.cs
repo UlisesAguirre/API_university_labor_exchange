@@ -73,6 +73,11 @@ namespace API_university_labor_exchange.Services.Implementations
             User userData = _userRepository.GetUserById(id);
             Student studentData = _studentRepository.GetStudent(id);
 
+            if (studentData.IdCareer == null)
+            {
+                return null;
+            }
+
             int idCareer = studentData.IdCareer.Value;
 
             Career studentCareer = _careerRepository.GetCareerBy(idCareer);
