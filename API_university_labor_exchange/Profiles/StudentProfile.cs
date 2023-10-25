@@ -10,6 +10,7 @@ namespace API_university_labor_exchange.Profiles
         public StudentProfile() 
         {
             CreateMap<Student, ReadAllStudentDTO>();
+            CreateMap<ReadAllStudentDTO, Student>();
             CreateMap<Student, ReadProfileStudentDTO>();
             CreateMap<UpdateStudentDTO, Student>();
 

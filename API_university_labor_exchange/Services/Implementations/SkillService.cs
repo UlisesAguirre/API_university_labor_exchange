@@ -16,12 +16,6 @@ namespace API_university_labor_exchange.Services.Implementations
             _mapper = mapper;
         }
 
-        public IEnumerable<ReadSkillDTO> GetAllSkills()
-        {
-            var skills = _skillRepository.GetAllSkills();
-            return _mapper.Map<ICollection<ReadSkillDTO>>(skills);
-        }
-
         public ICollection<ReadSkillDTO> GetSkillsForForm()
         {
             var skills = _skillRepository.GetSkillsForForm();
@@ -33,6 +27,7 @@ namespace API_university_labor_exchange.Services.Implementations
             return _mapper.Map<ReadSkillDTO>(skill);
 
         }
+
         public void AddSkill(CreateSkillDTO createSkillDTO)
         {
             Skill newSkill = new Skill();
@@ -54,11 +49,10 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public void DeleteSkill(int skillId)
         {
-            if (skillId != null)
-            {
-                _skillRepository.DeleteSkill(skillId);
-                _skillRepository.SaveChanges();
-            }
+
+            _skillRepository.DeleteSkill(skillId);
+            _skillRepository.SaveChanges();
+
         }
     }
 }

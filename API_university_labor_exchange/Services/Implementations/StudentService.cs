@@ -1,5 +1,4 @@
-﻿using API_university_labor_exchange.Data.Implementations;
-using API_university_labor_exchange.Data.Interfaces;
+﻿using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.SkillDTOs;
@@ -7,9 +6,6 @@ using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
-using Azure.Core;
-using Microsoft.CodeAnalysis.CSharp;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace API_university_labor_exchange.Services.Implementations
 {
@@ -17,27 +13,18 @@ namespace API_university_labor_exchange.Services.Implementations
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ISkillRepository _skillRepository;
         private readonly IMapper _mapper;
 
-        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, ISkillRepository skillRepository, IMapper mapper)
+        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _userRepository = userRepository;
-            _skillRepository = skillRepository;
             _mapper = mapper;
-        }
-        public ICollection<ReadAllStudentDTO> GetAllStudents()
-        {
-            //falta trae los datos del usuario de cada student
-            var students = _studentRepository.GetAllStudents();
-
-            return _mapper.Map<ICollection<ReadAllStudentDTO>>(students);
         }
 
         public List<ReadStudentsToAdmin> GetStudentsForAdmin()
 
-        { 
+        {
             List<User> users = _userRepository.GetStudentsForAdmin();
 
             List<ReadStudentsToAdmin> students = _mapper.Map<List<ReadStudentsToAdmin>>(users);
@@ -45,7 +32,8 @@ namespace API_university_labor_exchange.Services.Implementations
             foreach (var student in students)
             {
                 var studentData = _studentRepository.GetStudent(student.IdUser);
-                student.Legajo = studentData.Legajo;
+                if(studentData != null)
+                    student.Legajo = studentData.Legajo;
 
             }
 
@@ -121,7 +109,7 @@ namespace API_university_labor_exchange.Services.Implementations
         public void AddCurriculum(IFormFile curriculum, int studentId)
         {
             Student? student = _studentRepository.GetStudent(studentId);
-            
+
             if (student != null)
             {
                 using var fileStream = curriculum.OpenReadStream(); //OpenReadStream() abre la request stream para leer el archivo
@@ -139,8 +127,8 @@ namespace API_university_labor_exchange.Services.Implementations
         public bool DeleteCurriculum(int id)
         {
             Student? student = _studentRepository.GetStudent(id);
-            
-            if(student != null)
+
+            if (student != null)
             {
                 student.Curriculum = null;
                 if (_studentRepository.SaveChanges())
@@ -149,9 +137,10 @@ namespace API_university_labor_exchange.Services.Implementations
             return false;
         }
 
+
         public Student GetCurriculum(int id)
-        { 
-           return _studentRepository.GetStudent(id);
+        {
+            return _studentRepository.GetStudent(id);
         }
 
         public void SetUserState(SetUserStateDTO user)

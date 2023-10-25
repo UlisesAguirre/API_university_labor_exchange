@@ -1,9 +1,6 @@
-﻿using API_university_labor_exchange.Entities;
-using API_university_labor_exchange.Models.Company;
+﻿using API_university_labor_exchange.Models.Company;
 using API_university_labor_exchange.Models.CompanyDTOs;
 using API_university_labor_exchange.Models.JobPositionDTOs;
-using API_university_labor_exchange.Models.StudentDTOs;
-using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +10,7 @@ namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
@@ -25,82 +22,130 @@ namespace API_university_labor_exchange.Controllers
             _jobPositionservice = jobPositionService;
         }
 
-        [HttpGet("GetAllCompanies")]
-        [Authorize(Roles = "admin")]
-        public ActionResult<ICollection<ReadAllCompanyDTO>> GetAllCompanies()
+
+        [HttpGet("GetCompanyProfile/{id}")]
+        [Authorize(Roles = "company")]
+        public ActionResult<ReadProfileCompanyDTO> GetProfileCompany([FromRoute] int id)
         {
-            var companies = _companyService.GetAllCompanies(); 
-            return Ok(companies);
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int companyId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (id != companyId)
+                    return Forbid("Acceso prohibido");
+
+
+                ReadProfileCompanyDTO companyProfile = _companyService.GetProfile(id);
+
+                if (companyProfile == null)
+                    return NotFound("No se encontró a la compañía");
+                return Ok(companyProfile);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos de la compañía");
+            }
+
         }
 
         [HttpGet("GetCompaniesToAdmin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadCompaniesToAdmin>> GetCompaniesForAdmin()
         {
-            var companies = _companyService.GetCompaniesForAdmin();
-
-            return Ok(companies);
-        }
-
-
-        [HttpGet("GetCompany/{id}")]
-        [Authorize(Roles = "company,admin")]
-        public ActionResult<ReadAllCompanyDTO> GetCompany([FromRoute] int id)
-        {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-            var company = new ReadAllCompanyDTO();
-
-            if (userRole == "admin")
+            try
             {
-                company = _companyService.GetCompany(id);
-            } else
+                var companies = _companyService.GetCompaniesForAdmin();
+                return Ok(companies);
+            }
+            catch (Exception)
             {
-                company = _companyService.GetCompany(Int32.Parse(userIdClaim));
+                return BadRequest("Error al acceder a los datos de las compañías");
             }
 
-            if (company == null)
-                return NotFound();
-            return Ok(company);
+        }
+
+        [HttpGet("GetCompany/{id}")]
+        [Authorize(Roles = "company")]
+        public ActionResult<ReadAllCompanyDTO> GetCompany([FromRoute] int id)
+        {
+            try
+            {
+
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int companyId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (id != companyId)
+                    return Forbid("Acceso prohibido");
+
+                var company = new ReadAllCompanyDTO();
+                company = _companyService.GetCompany(companyId);
+                if (company == null)
+                    return NotFound("No se encontro la compañía");
+                return Ok(company);
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error acceder a los datos de la compañía");
+            }
+
+        }
+
+        [HttpGet("GetCompanyJobPositionsInfo")]
+        [Authorize(Roles = "company")]
+        public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetCompanyJobPositionsInfo()
+        {
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int companyId))
+                    return Unauthorized("Usted no esta autorizado");
+
+
+                var company = _companyService.GetCompany(companyId);
+                if (company == null)
+                    return NotFound("No se encontraro la compañía");
+
+                var cuit = company.Cuit;
+
+                var jobPosition = _jobPositionservice.GetCompanyJobPositions(cuit);
+
+                if (jobPosition != null)
+                    return Ok(jobPosition);
+                return NotFound("No se encontraron ofertas laborales");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error acceder a los datos de las ofertas laborales");
+            }
         }
 
         [HttpPut("UpdateCompany")]
         [Authorize(Roles = "company")]
         public ActionResult UpdateCompany([FromBody] UpdateCompanyDTO company)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if(company.IdUser != Int32.Parse(userIdClaim))
+            try
             {
-                return Forbid();
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int companyId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (company.IdUser != companyId)
+                    return Forbid("Acceso prohibido");
+
+
+                _companyService.UpdateCompany(company, companyId);
+                return Ok("Compañia actualizada con exito");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al actualizar la compañía");
             }
 
-            var companyId = company.IdUser;
-            
-            _companyService.UpdateCompany(company, companyId);
-            return Ok("Compañia actualizada con exito");
-            
-        }
-
-        [HttpGet("GetCompanyProfile/{id}")]
-        [Authorize(Roles = "company")]
-
-        public ActionResult<ReadProfileCompanyDTO> GetProfileCompany([FromRoute] int id)
-        {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (id != Int32.Parse(userIdClaim))
-            {
-                return Forbid();
-            }
-
-            ReadProfileCompanyDTO companyProfile = _companyService.GetProfile(id);
-            if (companyProfile == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(companyProfile);
         }
 
 
@@ -108,34 +153,28 @@ namespace API_university_labor_exchange.Controllers
         [Authorize(Roles = "company")]
         public ActionResult AddJobPosition([FromBody] CreateJobPositionDTO jobPositionDTO)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (!int.TryParse(userIdClaim, out int companyId))
-                return Unauthorized();
-           
-            jobPositionDTO.IdCompany = _companyService.GetCompany(companyId).Cuit;
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int companyId))
+                    return Unauthorized("Usted no esta autorizado");
 
-            _jobPositionservice.AddJobPosition(jobPositionDTO);
-            
-            return Ok("Busqueda Laboral agregada con exito");
+                var company = _companyService.GetCompany(companyId);
+                if (company == null)
+                    return NotFound("Compañía no encontrada");
+
+                jobPositionDTO.IdCompany = company.Cuit;
+
+                _jobPositionservice.AddJobPosition(jobPositionDTO);
+                return Ok("Busqueda Laboral agregada con exito");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al agregar la oferta laboral");
+            }
+
         }
-
-        [HttpGet("GetCompanyJobPositionsInfo")]
-        public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetCompanyJobPositionsInfo()
-        {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (!int.TryParse(userIdClaim, out int companyId))
-                return Unauthorized();
-
-            var cuit = _companyService.GetCompany(companyId).Cuit;
-
-            var jobPosition = _jobPositionservice.GetCompanyJobPositions(cuit);
-            
-            if(jobPosition != null)
-                return Ok(jobPosition);
-            return NotFound();
-        
-        }
-
 
     }
 }

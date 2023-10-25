@@ -9,11 +9,6 @@ namespace API_university_labor_exchange.Data.Implementations
 
         public CareerRepository(UniversityLaborExchangeContext context) : base(context) { }
 
-        public IEnumerable<Career> GetAllCareers()
-        {
-            return _context.Careers.OrderBy(c => c.Name).ToList();
-        }
-
         public ICollection<Career> GetCareersForForm()
         {
             return _context.Careers.Where(c => c.State == true).OrderBy(c => c.Name).ToList();
