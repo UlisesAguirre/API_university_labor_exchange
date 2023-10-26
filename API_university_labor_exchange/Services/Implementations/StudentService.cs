@@ -140,7 +140,9 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public Student GetCurriculum(int id)
         {
-            return _studentRepository.GetStudent(id);
+         
+           return _studentRepository.GetStudent(id);
+ 
         }
 
         public void SetUserState(SetUserStateDTO user)

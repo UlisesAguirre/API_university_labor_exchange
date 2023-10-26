@@ -46,6 +46,9 @@ namespace API_university_labor_exchange.Data.Implementations
                 .Include(j => j.StudentsJobPositions)
                     .ThenInclude(sj => sj.LegajoNavigation)
                     .ThenInclude(ss => ss.IdUserNavigation)
+                .OrderBy(j => j.JobType)
+                .ThenBy(j => j.State)
+                .ThenBy(j => j.CreatedDate)
                 .ToList();
         }
 
