@@ -15,11 +15,14 @@ namespace API_university_labor_exchange.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IEncrypt _encrypt;
 
-        public AuthenticationController(IConfiguration configuration, IAuthenticationService authenticationService)
+        public AuthenticationController(IConfiguration configuration,
+            IAuthenticationService authenticationService, IEncrypt encrypt)
         {
             _configuration = configuration;
             _authenticationService = authenticationService;
+            _encrypt = encrypt;
         }
 
         [HttpPost("Authenticate")]
@@ -59,7 +62,9 @@ namespace API_university_labor_exchange.Controllers
         }
         private User? Authenticate(Credentials credentials)
         {
-            return _authenticationService.ValidateUser(credentials.Email, credentials.Password);
+            var hashedPassword = _encrypt.GetSHA256(credentials.Password);
+
+            return _authenticationService.ValidateUser(credentials.Email, hashedPassword);
         }
     }
 }
