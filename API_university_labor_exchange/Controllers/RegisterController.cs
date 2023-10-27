@@ -9,7 +9,7 @@ namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
+    [Authorize]
     public class RegisterController : Controller
     {
         private readonly IRegisterService _registerService;
@@ -19,6 +19,7 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpPost("RegisterStudent")]
+        [AllowAnonymous]
         public ActionResult<bool> CreateStudent(CreateStudentDTO student)
         {
             bool newStudent = _registerService.CreateStudent(student);
@@ -32,6 +33,7 @@ namespace API_university_labor_exchange.Controllers
         }
 
         [HttpPost("RegisterCompany")]
+        [AllowAnonymous]
         public ActionResult<bool> CreateCompany(CreateCompanyDTO company)
         {
             bool newCompany = _registerService.CreateCompany(company);

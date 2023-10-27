@@ -8,6 +8,7 @@ namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class CareerController : ControllerBase
     {
         private readonly ICareerService _careerService;
@@ -17,49 +18,71 @@ namespace API_university_labor_exchange.Controllers
             _careerService = careerService;
         }
 
-        [HttpGet("GetAllCareers")]
-        public ActionResult<ICollection<ReadCareerDTO>> GetAllCareers()
-        {
-            var careers = _careerService.GetAllCareers();
-            return Ok(careers);
-        }
 
         [HttpGet("GetCareersForForms")]
+        [Authorize(Roles = "admin, student, company")]
         public ActionResult<ICollection<ReadCareersForFormDTO>> GetCareersForForms()
         {
-            var careers = _careerService.GetCareersForForm();
-            return Ok(careers);
-        }
-
-
-        [HttpGet("GetCareer")]
-        public ActionResult<ReadCareerDTO> GetCareer(int careerId) 
-        {
-            var career = _careerService.GetCareerById(careerId);
-            if(career == null)
-                return NotFound();
-            return Ok(career);
-            
-        }
-
-        [HttpPost ("CreateCareer")] 
-        public ActionResult AddCareer (CreateCareerDTO career)
-        {
-            if(career.IdCareer == 0)
+            try
             {
-                _careerService.AddCareer(career);
-                return Ok("Carrera cargada con exito");
+                var careers = _careerService.GetCareersForForm();
+                if (careers == null)
+                    return NotFound("No se econtraron carreras");
+                return Ok(careers);
+            }
+            catch
+            {
+                return BadRequest("Error al acceder a los datos de las carreras");
             }
 
-            _careerService.UpdateCareer(career);
-            return Ok("Carrera modificada con exito");
+        }
+
+
+        //[HttpGet("GetCareer")]
+        //public ActionResult<ReadCareerDTO> GetCareer(int careerId)
+        //{
+        //    var career = _careerService.GetCareerById(careerId);
+        //    if (career == null)
+        //        return NotFound();
+        //    return Ok(career);
+
+        //}
+
+        [HttpPost("CreateCareer")]
+        [Authorize(Roles = "admin")]
+        public ActionResult AddCareer(CreateCareerDTO career)
+        {
+            try
+            {
+                if (career.IdCareer == 0)
+                {
+                    _careerService.AddCareer(career);
+                    return Ok("Carrera cargada con exito");
+                }
+
+                _careerService.UpdateCareer(career);
+                return Ok("Carrera modificada con exito");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al cargar los datos de la carrera");
+            }
+
         }
 
         [HttpDelete("DeleteCareer/{careerId}")]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteCareer([FromRoute] int careerId)
         {
-            _careerService.DeleteCareer(careerId);
-            return Ok("Carrera borrada correctamente");
+            try
+            {
+                _careerService.DeleteCareer(careerId);
+                return Ok("Carrera borrada con exito");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al borrar los datos de la carrera");
+            }
 
         }
 

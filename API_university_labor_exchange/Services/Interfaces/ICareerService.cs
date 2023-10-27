@@ -5,10 +5,9 @@ namespace API_university_labor_exchange.Services.Interfaces
 {
     public interface ICareerService
     {
-        public ICollection<ReadCareerDTO> GetAllCareers();
-        public ReadCareerDTO GetCareerById (int careerId);
-        public ReadCareerDTO AddCareer(CreateCareerDTO createCareerDTO);
 
+        public ReadCareerDTO GetCareerById(int careerId);
+        public ReadCareerDTO AddCareer(CreateCareerDTO createCareerDTO);
         public ICollection<ReadCareersForFormDTO> GetCareersForForm();
         void UpdateCareer(CreateCareerDTO createCareerDTO);
         void DeleteCareer(int careerId);

@@ -1,8 +1,7 @@
-﻿using API_university_labor_exchange.Entities;
-using API_university_labor_exchange.Models;
+﻿
 using API_university_labor_exchange.Models.JobPositionDTOs;
-using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,8 +10,8 @@ namespace API_university_labor_exchange.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-
-    public class JobPositionController :ControllerBase
+    [Authorize]
+    public class JobPositionController : ControllerBase
     {
         private IJobPositionService _jobPositionService;
         private IStudentService _studentService;
@@ -20,65 +19,120 @@ namespace API_university_labor_exchange.Controllers
         public JobPositionController(IJobPositionService jobPositionService, IStudentService studentService)
         {
             _jobPositionService = jobPositionService;
-            _studentService = studentService;   
+            _studentService = studentService;
         }
 
         [HttpGet("GetAllInterships")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadJobPositionDto>> GetAllInterships()
         {
-            ICollection<ReadJobPositionDto> jobPosition = _jobPositionService.GetAllJobPosition();
+            try
+            {
+                ICollection<ReadJobPositionDto> jobPosition = _jobPositionService.GetAllJobPosition();
+                if (jobPosition == null)
+                    return NotFound("No se encontraron pasantías");
+                return Ok(_jobPositionService.GetAllInterships(jobPosition));
 
-            return Ok(_jobPositionService.GetAllInterships(jobPosition));
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos de las pasantías");
+            }
+
         }
 
         [HttpGet("GetAllJobs")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadJobPositionDto>> GetAllJobs()
         {
-            ICollection<ReadJobPositionDto> jobPosition = _jobPositionService.GetAllJobPosition();
+            try
+            {
+                ICollection<ReadJobPositionDto> jobPosition = _jobPositionService.GetAllJobPosition();
+                if (jobPosition == null)
+                    return NotFound("No se encontraron pasantías");
 
-            return Ok(_jobPositionService.GetAllJobs(jobPosition));
+                return Ok(_jobPositionService.GetAllJobs(jobPosition));
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos de las pasantías");
+            }
+
         }
 
         [HttpGet("GetJobPositions")]
+        [Authorize(Roles = "student")]
         public ActionResult<ICollection<ReadJobPositionCompanyDTO>> GetJobPositions()
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            try
+            {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int studentId))
+                    return Unauthorized("No autorizado");
 
-            var student = _studentService.GetStudent(Int32.Parse(userIdClaim));
 
-            var jobPosition = _jobPositionService.GetJobPosition(student.Legajo);
+                var student = _studentService.GetStudent(studentId);
+                if (student == null)
+                    return NotFound("Estudiante no encontrado");
 
-            if (jobPosition != null)
-                return Ok(jobPosition);
-            return NotFound();
+                var jobPosition = _jobPositionService.GetJobPosition(student.Legajo);
+
+                if (jobPosition != null)
+                    return Ok(jobPosition);
+                return NotFound("No se encontraron ofertas laborales");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos de las ofertas laborales");
+            }
+
 
         }
 
         [HttpPut("SetJobPositionState")]
-
+        [Authorize(Roles = "admin")]
         public ActionResult SetJobPositionState(SetJobPositionStateDTO jobPosition)
         {
-            _jobPositionService.SetJobPositionState(jobPosition);
-            return Ok();
+            try
+            {
+                _jobPositionService.SetJobPositionState(jobPosition);
+                return Ok("Estado actualizado con exito");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al actualizar el estado");
+            }
+
         }
 
         [HttpPost("AddStudentJobPosition")]
-        public ActionResult AddStudentJobPosition([FromBody] int idJobPosition) 
+        [Authorize(Roles = "student")]
+        public ActionResult AddStudentJobPosition([FromBody] int idJobPosition)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (!int.TryParse(userIdClaim, out int studentId))
-                return Unauthorized();
+            try
+            {
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int studentId))
+                    return Unauthorized("No autorizado");
 
-            var student = _studentService.GetStudent(studentId);
+                var student = _studentService.GetStudent(studentId);
 
-            if (student == null)
-                return NotFound("No se encontro al estudiante");
-            var legajo = student.Legajo;
+                if (student == null)
+                    return NotFound("No se encontro al estudiante");
+                var legajo = student.Legajo;
 
-            _jobPositionService.AddStudentJobPosition(legajo, idJobPosition);
+                _jobPositionService.AddStudentJobPosition(legajo, idJobPosition);
 
-            return Ok("Postulación agregada con exito");
+                return Ok("Postulación agregada con exito");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al guardar la postulación");
+            }
+
+
         }
     }
 }

@@ -8,7 +8,6 @@ namespace API_university_labor_exchange.Services.Interfaces
 {
     public interface IStudentService
     {
-        public ICollection<ReadAllStudentDTO> GetAllStudents();
         List<ReadStudentsToAdmin> GetStudentsForAdmin();
         public ReadAllStudentDTO? GetStudent(int id);
         public void UpdateStudent(UpdateStudentDTO student, int id);

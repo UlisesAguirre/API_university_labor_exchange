@@ -1,17 +1,17 @@
 ﻿using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
+using API_university_labor_exchange.Services.Implementations;
 using API_university_labor_exchange.Services.Interfaces;
-using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 using System.Security.Claims;
 
 namespace API_university_labor_exchange.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -20,64 +20,76 @@ namespace API_university_labor_exchange.Controllers
             _studentService = studentService;
         }
 
-        [HttpGet("GetAllStudents")]
-        [Authorize(Roles = "admin")]
-        public ActionResult<ICollection<ReadAllStudentDTO>> GetAllStudents()
-        {
-            var students = _studentService.GetAllStudents();
-            return Ok(students);
-        }
-
         [HttpGet("GetStudentsToAdmin")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ICollection<ReadStudentsToAdmin>> GetStudentsForAdmin()
         {
-            var students = _studentService.GetStudentsForAdmin();
+            try
+            {
+                var students = _studentService.GetStudentsForAdmin();
+                if (students == null)
+                    return NotFound("No se encontraron estudiantes");
+                return Ok(students);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos de los estudiantes");
+            }
 
-            return Ok(students);
         }
 
         [HttpGet("GetStudent/{id}")]
-        [Authorize(Roles = "student,admin")]
+        [Authorize(Roles = "student")]
         public ActionResult<ReadAllStudentDTO> GetStudent([FromRoute] int id)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-            var student = new ReadAllStudentDTO();
-
-            if(userRole == "admin")
+            try
             {
-                student = _studentService.GetStudent(id);
-            } else
-            {
-                student = _studentService.GetStudent(Int32.Parse(userIdClaim));
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int userId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (id != userId)
+                    return Forbid("Acceso prohibido");
+
+
+                var student = _studentService.GetStudent(userId);
+
+                if (student == null)
+                    return NotFound("Estudiante no encontrado");
+
+                return Ok(student);
             }
-
-            
-            if (student == null)
-                return NotFound();
-            return Ok(student);
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos del estudiante");
+            }
         }
 
         [HttpGet("GetStudentProfile/{id}")]
         [Authorize(Roles = "student")]
-
         public ActionResult<ReadProfileStudentDTO> GetProfileStudent([FromRoute] int id)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (id != Int32.Parse(userIdClaim))
+            try
             {
-                Forbid();
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int userId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (id != userId)
+                    Forbid("Acceso prohibido");
+
+                ReadProfileStudentDTO studentProfile = _studentService.GetProfile(id);
+                if (studentProfile == null)
+                    return NotFound("Estudiante no encontrado");
+
+                return Ok(studentProfile);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos del estudiante");
             }
 
-            ReadProfileStudentDTO studentProfile = _studentService.GetProfile(id);
-            if (studentProfile == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(studentProfile);
         }
 
 
@@ -85,23 +97,45 @@ namespace API_university_labor_exchange.Controllers
         [Authorize(Roles = "student")]
         public ActionResult UpdateStudent([FromBody] UpdateStudentDTO student)
         {
-
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (student.IdUser != Int32.Parse(userIdClaim))
+            try
             {
-                return Forbid();
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdClaim, out int userId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (student.IdUser != userId)
+                    Forbid("Acceso prohibido");
+
+
+                var skills = student.StudentsSkills;
+
+                _studentService.UpdateStudent(student, userId);
+
+                _studentService.UpdateSkills(skills, userId);
+
+                return Ok(skills);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al actualizar los datos del estudiante");
             }
 
-            var studentId = student.IdUser;
 
-            var skills = student.StudentsSkills;
+        }
 
-            _studentService.UpdateStudent(student, studentId);
-
-            _studentService.UpdateSkills(skills, studentId);
-
-            return Ok(skills);
+        [HttpPut("SetUserState")]
+        [Authorize(Roles = "admin")]
+        public ActionResult SetUserState(SetUserStateDTO user)
+        {
+            try
+            {
+                _studentService.SetUserState(user);
+                return Ok("Estado actualizado con exito");
+            }
+            catch
+            {
+                return BadRequest("Error al actualizar el estado");
+            }
 
         }
 
@@ -109,77 +143,91 @@ namespace API_university_labor_exchange.Controllers
         [Authorize(Roles = "student")]
         public ActionResult AddCurriculum([FromForm] AddCurriculumDTO request)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (!int.TryParse(userIdClaim, out int studentId))
-                return Unauthorized();
-
-            if (request.Id != studentId)
+            try
             {
-                return Forbid();
+
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (!int.TryParse(userIdClaim, out int studentId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (request.Id != studentId)
+                    return Forbid("Acceso prohibido");
+
+                IFormFile curriculum = request.Curriculum;
+
+                if (curriculum.Length < 0)
+                    return BadRequest("Debe agregar un archivo pdf valido");
+
+                _studentService.AddCurriculum(curriculum, studentId);
+
+                return Ok("Curriculum agregado con exito");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al agregar el curriculum");
             }
 
-            IFormFile curriculum = request.Curriculum;
-
-            if (curriculum.Length < 0)
-                return BadRequest("Debe agregar un archivo pdf valido");
-
-            _studentService.AddCurriculum(curriculum, studentId);
-
-            return Ok();
         }
 
         [HttpPut("DeleteCurriculum")]
         [Authorize(Roles = "student")]
         public ActionResult DeleteCurriculum([FromBody] int id)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (!int.TryParse(userIdClaim, out int studentId))
-                return Unauthorized();
-
-            if (id != studentId)
+            try
             {
-                return Forbid();
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (!int.TryParse(userIdClaim, out int studentId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if (id != studentId)
+                    return Forbid("Acceso prohibido");
+
+                _studentService.DeleteCurriculum(studentId);
+                    return Ok("curriculum eliminado con exito");
+                
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al eliminar el curriculum" + ex);
             }
 
-            if (_studentService.DeleteCurriculum(id))
-               return Ok("curriculum eliminado con exito");
-            return BadRequest("Error al eliminar el curriculum");
+
         }
 
         [HttpGet("GetCurriculum/{id}")]
         [Authorize(Roles = "student, company")]
         public ActionResult GetCurriculum([FromRoute] int id)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-            if (!int.TryParse(userIdClaim, out int userId))
-                return Unauthorized();
-
-            if ((userRole == "student" && id != userId) || userRole != "company")
+            try
             {
-                return Forbid();
+                var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                if (!int.TryParse(userIdClaim, out int userId))
+                    return Unauthorized("Usted no esta autorizado");
+
+                if ((userRole == "student" && id != userId) || (userRole != "student" && userRole != "company"))
+                    return Forbid("Acceso prohibido");
+
+                var student = _studentService.GetCurriculum(id);
+
+                if (student == null)
+                    return NotFound("Estudiante no encontrado");
+
+                if (student.Curriculum != null)
+                    return File(student.Curriculum, "application/pdf", $"{student.Name}_{student.LastName}_CV.pdf");
+
+                return NotFound("Curriculum no encontrado");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al acceder a los datos del alumno");
             }
 
-            var student = _studentService.GetCurriculum(id);
-
-            if (student == null)
-                return NotFound();
-
-            if(student.Curriculum != null)
-                return File(student.Curriculum, "application/pdf", $"{student.Name}_{student.LastName}_CV.pdf");
-
-            return NotFound("No tiene curriculum");
         }
 
-        [HttpPut("SetUserState")]
 
-        public ActionResult SetUserState(SetUserStateDTO user)
-        {
-            _studentService.SetUserState(user);
-            return Ok();
-        }
     }
 }

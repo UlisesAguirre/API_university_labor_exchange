@@ -9,11 +9,6 @@ namespace API_university_labor_exchange.Data.Implementations
     {
         public SkillRepository(UniversityLaborExchangeContext context) : base(context) { }
 
-        public IEnumerable<Skill> GetAllSkills()
-        {
-            return _context.Skills.OrderBy(s => s.SkillName).ToList();
-
-        }
         public ICollection<Skill> GetSkillsForForm()
         {
             return _context.Skills.Where(s => s.State == true).OrderBy(s => s.SkillName).ToList();
@@ -23,6 +18,7 @@ namespace API_university_labor_exchange.Data.Implementations
         {
             return _context.Skills.Find(skillId);
         }
+
         public void AddSkill(Skill newSkill)
         {
             _context.Add(newSkill);
@@ -31,15 +27,13 @@ namespace API_university_labor_exchange.Data.Implementations
         public Skill UpdateSkill(CreateSkillDTO updateSkill)
         {
 
-            Skill existingSkill = _context.Skills.FirstOrDefault(s => s.IdSkill == updateSkill.IdSkill);
+            var existingSkill = _context.Skills.FirstOrDefault(s => s.IdSkill == updateSkill.IdSkill);
 
-            if (existingSkill == null)
+            if (existingSkill != null)
             {
-                return null;
+                existingSkill.SkillName = updateSkill.SkillName;
+                _context.SaveChanges();
             }
-
-            existingSkill.SkillName = updateSkill.SkillName;
-            _context.SaveChanges();
 
             return existingSkill;
         }
