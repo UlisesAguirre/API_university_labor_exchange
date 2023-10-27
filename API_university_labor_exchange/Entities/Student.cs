@@ -1,9 +1,10 @@
-﻿using System;
+﻿using API_university_labor_exchange.Observer;
+using System;
 using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
 
-public partial class Student 
+public partial class Student : ISuscriber
 {
     public string Legajo { get; set; } = null!;
 
@@ -74,4 +75,7 @@ public partial class Student
     public virtual ICollection<StudentsJobPosition> StudentsJobPositions { get; set; } = new List<StudentsJobPosition>();
 
     public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
+
+
+    
 }

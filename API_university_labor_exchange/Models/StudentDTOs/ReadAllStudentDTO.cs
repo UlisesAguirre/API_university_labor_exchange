@@ -1,11 +1,12 @@
 ﻿using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models.SkillDTOs;
+using API_university_labor_exchange.Observer;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
-    public class ReadAllStudentDTO
+    public class ReadAllStudentDTO : ISuscriber
     {
         public string Email { get; set; }
         public string Username { get; set; }
@@ -74,6 +75,11 @@ namespace API_university_labor_exchange.Models.Student
         public State State { get; set; }
 
         public virtual List<StudentSkillsDto> StudentsSkills { get; } = new List<StudentSkillsDto>();
- 
+
+        public int NotificationsCount { get; set; }
+        public void Update()
+        {
+            NotificationsCount++;
+        }
     }
 }
