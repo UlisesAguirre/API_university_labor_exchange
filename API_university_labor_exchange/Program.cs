@@ -70,6 +70,7 @@ builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IJobPositionService, JobPositionService>();
+builder.Services.AddScoped<IEncrypt, Encrypt>();
 
 
 //Add repositories -

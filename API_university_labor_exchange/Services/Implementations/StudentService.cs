@@ -18,13 +18,16 @@ namespace API_university_labor_exchange.Services.Implementations
         private readonly IStudentRepository _studentRepository;
         private readonly IUserRepository _userRepository;
         private readonly ISkillRepository _skillRepository;
+        private readonly ICareerRepository _careerRepository;
         private readonly IMapper _mapper;
 
-        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository, ISkillRepository skillRepository, IMapper mapper)
+        public StudentService(IStudentRepository studentRepository, IUserRepository userRepository,
+                              ISkillRepository skillRepository, ICareerRepository careerRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _userRepository = userRepository;
             _skillRepository = skillRepository;
+            _careerRepository = careerRepository;
             _mapper = mapper;
         }
         public ICollection<ReadAllStudentDTO> GetAllStudents()
@@ -37,7 +40,7 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public List<ReadStudentsToAdmin> GetStudentsForAdmin()
 
-        { 
+        {
             List<User> users = _userRepository.GetStudentsForAdmin();
 
             List<ReadStudentsToAdmin> students = _mapper.Map<List<ReadStudentsToAdmin>>(users);
@@ -70,10 +73,31 @@ namespace API_university_labor_exchange.Services.Implementations
             User userData = _userRepository.GetUserById(id);
             Student studentData = _studentRepository.GetStudent(id);
 
+            if (studentData.IdCareer == null)
+            {
+                return null;
+            }
+
+            int idCareer = studentData.IdCareer.Value;
+
+            Career studentCareer = _careerRepository.GetCareerBy(idCareer);
+
             ReadProfileStudentDTO studentProfile = _mapper.Map<ReadProfileStudentDTO>(studentData);
 
             studentProfile.Email = userData.Email;
             studentProfile.Username = userData.Username;
+            studentProfile.CareerName = studentCareer.Name;
+
+
+            foreach (int idSkill in studentProfile.StudentsSkills.Select(s => s.IdSkill))
+            {
+                Skill skill = _skillRepository.GetSkill(idSkill);
+
+                if (skill != null)
+                {
+                    studentProfile.StudentsSkills.FirstOrDefault(s => s.IdSkill == idSkill).SkillName = skill.SkillName;
+                }
+            }
 
             return studentProfile;
         }
@@ -121,7 +145,7 @@ namespace API_university_labor_exchange.Services.Implementations
         public void AddCurriculum(IFormFile curriculum, int studentId)
         {
             Student? student = _studentRepository.GetStudent(studentId);
-            
+
             if (student != null)
             {
                 using var fileStream = curriculum.OpenReadStream(); //OpenReadStream() abre la request stream para leer el archivo
@@ -139,8 +163,8 @@ namespace API_university_labor_exchange.Services.Implementations
         public bool DeleteCurriculum(int id)
         {
             Student? student = _studentRepository.GetStudent(id);
-            
-            if(student != null)
+
+            if (student != null)
             {
                 student.Curriculum = null;
                 if (_studentRepository.SaveChanges())
@@ -150,8 +174,8 @@ namespace API_university_labor_exchange.Services.Implementations
         }
 
         public Student GetCurriculum(int id)
-        { 
-           return _studentRepository.GetStudent(id);
+        {
+            return _studentRepository.GetStudent(id);
         }
 
         public void SetUserState(SetUserStateDTO user)

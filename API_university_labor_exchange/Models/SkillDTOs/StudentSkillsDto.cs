@@ -5,5 +5,6 @@
         public int? IdSkill { get; set; }
         public string? SkillLevel { get; set; }
         public string Legajo { get; set; } = null!;
+        public string? SkillName { get; set; }
     }
 }
