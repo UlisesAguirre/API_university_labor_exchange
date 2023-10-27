@@ -68,6 +68,10 @@ public partial class Student : ISuscriber
 
     public bool? EmailValidation { get; set; }
 
+    public bool? CareerSubscription { get; set; }
+
+    public int? CareerNotification { get; set; }
+
     public virtual Career? IdCarrerNavigation { get; set; }
 
     public virtual User IdUserNavigation { get; set; } = null!;

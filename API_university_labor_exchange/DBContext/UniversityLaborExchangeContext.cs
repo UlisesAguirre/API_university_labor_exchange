@@ -333,7 +333,7 @@ public partial class UniversityLaborExchangeContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Password)
-                .HasMaxLength(50)
+                .HasMaxLength(200)
                 .IsUnicode(false);
             entity.Property(e => e.UserType)
                 .HasMaxLength(50)
