@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
 
-public partial class Student : ISuscriber
+public partial class Student
 {
     public string Legajo { get; set; } = null!;
 
@@ -70,7 +70,7 @@ public partial class Student : ISuscriber
 
     public bool? CareerSubscription { get; set; }
 
-    public int? CareerNotification { get; set; }
+    public int? CareerNotification { get; set; } = 0;
 
     public virtual Career? IdCarrerNavigation { get; set; }
 

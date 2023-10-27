@@ -1,7 +1,5 @@
-﻿using API_university_labor_exchange.Entities;
-using API_university_labor_exchange.Enums;
+﻿using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models.SkillDTOs;
-using API_university_labor_exchange.Observer;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.StudentDTOs
@@ -41,10 +39,7 @@ namespace API_university_labor_exchange.Models.StudentDTOs
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public State State { get; set; }
-
-        public int NotificationsCount { get; set; }
+        public int? CareerNotification { get; set; }
         public virtual ICollection<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
-
-        
     }
 }

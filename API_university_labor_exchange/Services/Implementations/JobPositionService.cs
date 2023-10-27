@@ -5,6 +5,7 @@ using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.JobPositionDTOs;
 using API_university_labor_exchange.Models.JobPositionDTOs.SkillsCareerListDto;
+using API_university_labor_exchange.Observer;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +19,18 @@ namespace API_university_labor_exchange.Services.Implementations
         private readonly ICareerRepository _careerRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly IMapper _mapper;
+        private readonly Publisher _publisher;
 
         public JobPositionService(IJobPositionRepository jobPositionRepository,
             ISkillRepository skillRepository, ICareerRepository careerRepository,
-            ICompanyRepository companyRepository, IMapper mapper)
+            ICompanyRepository companyRepository, IMapper mapper, Publisher publisher)
         {
             _jobPositionRepository = jobPositionRepository;
             _skillRepository = skillRepository;
             _careerRepository = careerRepository;
             _companyRepository = companyRepository;
             _mapper = mapper;
+            _publisher = publisher;
         }
 
         public void AddJobPosition(CreateJobPositionDTO jobPositionDTO)
@@ -38,6 +41,11 @@ namespace API_university_labor_exchange.Services.Implementations
             newJobPosition.JobPositionsCareers = _mapper.Map<List<JobPositionsCareer>>(jobPositionDTO.jobPositionCareer);
             newJobPosition.JobPostionsSkills = _mapper.Map<List<JobPostionsSkill>>(jobPositionDTO.jobPositionSkill);
             _jobPositionRepository.AddJobPosition(newJobPosition);
+
+            //foreach(JobPositionCareerDTO career in jobPositionDTO.jobPositionCareer)
+            //{
+            //    _publisher.Notify(career.IdCareer);
+            //}
         }
 
         public ICollection<ReadJobPositionDto> GetAllJobPosition()

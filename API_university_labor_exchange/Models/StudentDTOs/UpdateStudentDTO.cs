@@ -1,12 +1,14 @@
 ﻿
 using API_university_labor_exchange.Entities;
 using API_university_labor_exchange.Models.SkillDTOs;
+using API_university_labor_exchange.Observer;
 using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
-    public class UpdateStudentDTO
+    public class UpdateStudentDTO /*: ISuscriber*/
     {
+        public string Legajo { get; }
         public string Email { get; set; } = null!;
         public string Username { get; set; } = null!;
 
@@ -70,6 +72,12 @@ namespace API_university_labor_exchange.Models.Student
         public virtual List<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
 
         public int? IdCareer { get; set; }
+
+        public bool CareerSubscription { get; set; }
+        //public void Update()
+        //{
+        //    //CareerNotification++;
+        //}
 
     }
 }
