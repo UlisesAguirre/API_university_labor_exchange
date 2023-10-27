@@ -15,23 +15,26 @@ namespace API_university_labor_exchange.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IEncrypt _encrypt;
 
-        public AuthenticationController(IConfiguration configuration, IAuthenticationService authenticationService)
+        public AuthenticationController(IConfiguration configuration,
+            IAuthenticationService authenticationService, IEncrypt encrypt)
         {
             _configuration = configuration;
             _authenticationService = authenticationService;
+            _encrypt = encrypt;
         }
 
         [HttpPost("Authenticate")]
-        public ActionResult<string> Autenticar([FromBody] Credentials credentials) //Enviamos como parámetro la clase que creamos arriba
+        public ActionResult<string> Autenticar([FromBody] Credentials credentials) 
         {
-            //Paso 1: Validamos las credenciales
-            User user = Authenticate(credentials); //Lo primero que hacemos es llamar a una función que valide los parámetros que enviamos.
+            
+            User user = Authenticate(credentials); 
 
             if (user is null) //Si el la función de arriba no devuelve nada es porque los datos son incorrectos, por lo que devolvemos un Unauthorized (un status code 401).
                 return Unauthorized();
 
-            //Paso 2: Crear el token
+            //Crear el token
             var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"])); //Traemos la SecretKey del Json. agregar antes: using Microsoft.IdentityModel.Tokens;
 
             var credential = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
@@ -42,6 +45,7 @@ namespace API_university_labor_exchange.Controllers
             claimsForToken.Add(new Claim("email", user.Email)); //Lo mismo para given_name y family_name, son las convenciones para nombre y apellido. Ustedes pueden usar lo que quieran, pero si alguien que no conoce la app
             claimsForToken.Add(new Claim("username", user.Username)); //quiere usar la API por lo general lo que espera es que se estén usando estas keys.
             claimsForToken.Add(new Claim("role", user.UserType)); //Debería venir del usuario
+            claimsForToken.Add(new Claim("state", user.State.ToString()));
 
             var jwtSecurityToken = new JwtSecurityToken( //agregar using System.IdentityModel.Tokens.Jwt; Acá es donde se crea el token con toda la data que le pasamos antes.
               _configuration["Authentication:Issuer"],
@@ -58,7 +62,9 @@ namespace API_university_labor_exchange.Controllers
         }
         private User? Authenticate(Credentials credentials)
         {
-            return _authenticationService.ValidateUser(credentials.Email, credentials.Password);
+            var hashedPassword = _encrypt.GetSHA256(credentials.Password);
+
+            return _authenticationService.ValidateUser(credentials.Email, hashedPassword);
         }
     }
 }

@@ -10,20 +10,24 @@ namespace API_university_labor_exchange.Services.Implementations
     public class RegisterService : IRegisterService
     {
         private readonly IRegisterRepository _registerRepository;
+        private readonly IEncrypt _encrypt;
 
-        public RegisterService(IRegisterRepository registerRepository)
+        public RegisterService(IRegisterRepository registerRepository, IEncrypt encrypt)
         {
             _registerRepository = registerRepository;
+            _encrypt = encrypt;
         }
         public bool CreateStudent(CreateStudentDTO student)
         {
             string username = $"{student.Name} {student.LastName}";
 
+            var hashedPassword = _encrypt.GetSHA256(student.Password);
+
             User userData = new User
             {
                 Email = student.Email,
                 Username = username,
-                Password = student.Password, //Aca habria que hacer logica para hashear el password
+                Password = hashedPassword,
                 UserType = "student",
                 State = State.SinAsignar,
             };
@@ -43,12 +47,13 @@ namespace API_university_labor_exchange.Services.Implementations
 
         public bool CreateCompany(CreateCompanyDTO company)
         {
+            var hashedPassword = _encrypt.GetSHA256(company.Password);
 
             User userData = new User
             {
                 Email = company.Email,
                 Username = company.SocialReason,
-                Password = company.Password, //Aca habria que hacer logica para hashear el password
+                Password = hashedPassword,
                 UserType = "company",
                 State = State.SinAsignar
             };
