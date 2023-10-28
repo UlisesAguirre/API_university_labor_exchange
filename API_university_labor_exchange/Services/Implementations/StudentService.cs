@@ -4,6 +4,7 @@ using API_university_labor_exchange.Models;
 using API_university_labor_exchange.Models.SkillDTOs;
 using API_university_labor_exchange.Models.Student;
 using API_university_labor_exchange.Models.StudentDTOs;
+using API_university_labor_exchange.Observer;
 using API_university_labor_exchange.Services.Interfaces;
 using AutoMapper;
 
@@ -16,15 +17,18 @@ namespace API_university_labor_exchange.Services.Implementations
         private readonly ISkillRepository _skillRepository;
         private readonly ICareerRepository _careerRepository;
         private readonly IMapper _mapper;
+        private readonly Publisher _publisher;
 
         public StudentService(IStudentRepository studentRepository, IUserRepository userRepository,
-                              ISkillRepository skillRepository, ICareerRepository careerRepository, IMapper mapper)
+                              ISkillRepository skillRepository, ICareerRepository careerRepository,
+                              IMapper mapper, Publisher publisher)
         {
             _studentRepository = studentRepository;
             _userRepository = userRepository;
             _skillRepository = skillRepository;
             _careerRepository = careerRepository;
             _mapper = mapper;
+            _publisher = publisher;
         }
 
         public List<ReadStudentsToAdmin> GetStudentsForAdmin()
@@ -88,7 +92,9 @@ namespace API_university_labor_exchange.Services.Implementations
                     studentProfile.StudentsSkills.FirstOrDefault(s => s.IdSkill == idSkill).SkillName = skill.SkillName;
                 }
             }
+            studentData.CareerNotification = 0;
 
+            _studentRepository.SaveChanges();
             return studentProfile;
         }
 
@@ -102,9 +108,26 @@ namespace API_university_labor_exchange.Services.Implementations
                 userToUpdate.Email = student.Email;
                 userToUpdate.Username = student.Username;
 
+                //if (student.CareerSubscription)
+                //{
+                //    _publisher.Subscribe(student);
+                //} else
+                //{
+                //    _publisher.Unsubscribe(student);
+                //}
+
                 _mapper.Map(student, studentToUpdate);
                 _studentRepository.UpdateStudent(studentToUpdate);
                 _userRepository.UpdateUser(userToUpdate);
+
+                if (student.CareerSubscription)
+                {
+                    _publisher.Subscribe(student);
+                }
+                else
+                {
+                    _publisher.Unsubscribe(student);
+                }
 
                 _studentRepository.SaveChanges();
 

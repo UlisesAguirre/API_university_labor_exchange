@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;
 
-public partial class Student 
+public partial class Student
 {
     public string Legajo { get; set; } = null!;
 
@@ -69,7 +69,7 @@ public partial class Student
 
     public bool? CareerSubscription { get; set; }
 
-    public int? CareerNotification { get; set; }
+    public int? CareerNotification { get; set; } = 0;
 
     public virtual Career? IdCarrerNavigation { get; set; }
 
@@ -78,4 +78,7 @@ public partial class Student
     public virtual ICollection<StudentsJobPosition> StudentsJobPositions { get; set; } = new List<StudentsJobPosition>();
 
     public virtual ICollection<StudentsSkill> StudentsSkills { get; set; } = new List<StudentsSkill>();
+
+
+    
 }

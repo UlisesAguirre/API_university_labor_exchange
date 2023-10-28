@@ -7,12 +7,13 @@ namespace API_university_labor_exchange.Profiles
 {
     public class StudentProfile : Profile
     {
-        public StudentProfile() 
+        public StudentProfile()
         {
             CreateMap<Student, ReadAllStudentDTO>();
             CreateMap<ReadAllStudentDTO, Student>();
             CreateMap<Student, ReadProfileStudentDTO>();
             CreateMap<UpdateStudentDTO, Student>();
+            CreateMap<Student, UpdateStudentDTO>();
 
         }
     }

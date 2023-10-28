@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Data\Repository\**" />
+    <Compile Remove="NewFolder\**" />
     <Content Remove="Data\Repository\**" />
+    <Content Remove="NewFolder\**" />
     <EmbeddedResource Remove="Data\Repository\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="Data\Repository\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,10 +36,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

@@ -153,8 +153,8 @@ namespace API_university_labor_exchange.Controllers
         [Authorize(Roles = "company")]
         public ActionResult AddJobPosition([FromBody] CreateJobPositionDTO jobPositionDTO)
         {
-            try
-            {
+            //try
+            //{
                 var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (!int.TryParse(userIdClaim, out int companyId))
                     return Unauthorized("Usted no esta autorizado");
@@ -168,11 +168,11 @@ namespace API_university_labor_exchange.Controllers
                 _jobPositionservice.AddJobPosition(jobPositionDTO);
                 return Ok("Busqueda Laboral agregada con exito");
 
-            }
-            catch (Exception)
-            {
-                return BadRequest("Error al agregar la oferta laboral");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    return BadRequest("Error al agregar la oferta laboral");
+            //}
 
         }
 

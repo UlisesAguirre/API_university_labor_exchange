@@ -1,5 +1,4 @@
-﻿using API_university_labor_exchange.Entities;
-using API_university_labor_exchange.Enums;
+﻿using API_university_labor_exchange.Enums;
 using API_university_labor_exchange.Models.SkillDTOs;
 using System.Text.Json.Serialization;
 
@@ -74,6 +73,9 @@ namespace API_university_labor_exchange.Models.Student
         public State State { get; set; }
 
         public virtual List<StudentSkillsDto> StudentsSkills { get; } = new List<StudentSkillsDto>();
- 
+
+        public bool? CareerSubscription { get; set; }
+
+        
     }
 }

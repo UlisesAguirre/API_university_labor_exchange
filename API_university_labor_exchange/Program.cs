@@ -8,6 +8,7 @@ using API_university_labor_exchange.Data.Implementations;
 using API_university_labor_exchange.DBContext;
 using API_university_labor_exchange.Data.Interfaces;
 using API_university_labor_exchange.Services.Interfaces;
+using API_university_labor_exchange.Observer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,7 +86,9 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobPositionRepository, JobPositionRepository>();
 
+// Add Observer
 
+builder.Services.AddScoped<Publisher>();
 
 //Add automapper - 
 
