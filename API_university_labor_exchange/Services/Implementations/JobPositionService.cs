@@ -42,10 +42,10 @@ namespace API_university_labor_exchange.Services.Implementations
             newJobPosition.JobPostionsSkills = _mapper.Map<List<JobPostionsSkill>>(jobPositionDTO.jobPositionSkill);
             _jobPositionRepository.AddJobPosition(newJobPosition);
 
-            //foreach(JobPositionCareerDTO career in jobPositionDTO.jobPositionCareer)
-            //{
-            //    _publisher.Notify(career.IdCareer);
-            //}
+            foreach (JobPositionCareerDTO career in jobPositionDTO.jobPositionCareer)
+            {
+                _publisher.Notify(career.IdCareer);
+            }
         }
 
         public ICollection<ReadJobPositionDto> GetAllJobPosition()

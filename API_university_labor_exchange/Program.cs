@@ -86,10 +86,9 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobPositionRepository, JobPositionRepository>();
 
-//Add Observer
+// Add Observer
 
 builder.Services.AddScoped<Publisher>();
-
 
 //Add automapper - 
 

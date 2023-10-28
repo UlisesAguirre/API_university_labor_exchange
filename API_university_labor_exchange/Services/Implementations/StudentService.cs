@@ -92,9 +92,9 @@ namespace API_university_labor_exchange.Services.Implementations
                     studentProfile.StudentsSkills.FirstOrDefault(s => s.IdSkill == idSkill).SkillName = skill.SkillName;
                 }
             }
-
             studentData.CareerNotification = 0;
 
+            _studentRepository.SaveChanges();
             return studentProfile;
         }
 
@@ -119,6 +119,15 @@ namespace API_university_labor_exchange.Services.Implementations
                 _mapper.Map(student, studentToUpdate);
                 _studentRepository.UpdateStudent(studentToUpdate);
                 _userRepository.UpdateUser(userToUpdate);
+
+                if (student.CareerSubscription)
+                {
+                    _publisher.Subscribe(student);
+                }
+                else
+                {
+                    _publisher.Unsubscribe(student);
+                }
 
                 _studentRepository.SaveChanges();
 

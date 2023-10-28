@@ -1,5 +1,4 @@
-﻿using API_university_labor_exchange.Observer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace API_university_labor_exchange.Entities;

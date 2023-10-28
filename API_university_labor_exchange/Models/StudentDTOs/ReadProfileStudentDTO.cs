@@ -39,7 +39,9 @@ namespace API_university_labor_exchange.Models.StudentDTOs
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public State State { get; set; }
-        public int? CareerNotification { get; set; }
         public virtual ICollection<StudentSkillsDto> StudentsSkills { get; set; } = new List<StudentSkillsDto>();
+
+        public int? CareerNotification { get; set; }
+
     }
 }

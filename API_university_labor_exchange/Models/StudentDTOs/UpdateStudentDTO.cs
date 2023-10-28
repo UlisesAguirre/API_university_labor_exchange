@@ -6,9 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace API_university_labor_exchange.Models.Student
 {
-    public class UpdateStudentDTO /*: ISuscriber*/
+    public class UpdateStudentDTO : ISuscriber
     {
-        public string Legajo { get; }
+        public string Legajo { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Username { get; set; } = null!;
 
@@ -74,10 +74,12 @@ namespace API_university_labor_exchange.Models.Student
         public int? IdCareer { get; set; }
 
         public bool CareerSubscription { get; set; }
-        //public void Update()
-        //{
-        //    //CareerNotification++;
-        //}
+        public int? CareerNotification { get; set; }
+
+        public void Update()
+        {
+            CareerNotification = CareerNotification + 1;
+        }
 
     }
 }

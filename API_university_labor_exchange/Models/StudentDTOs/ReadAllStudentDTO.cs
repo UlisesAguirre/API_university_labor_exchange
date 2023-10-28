@@ -74,6 +74,8 @@ namespace API_university_labor_exchange.Models.Student
 
         public virtual List<StudentSkillsDto> StudentsSkills { get; } = new List<StudentSkillsDto>();
 
-        public bool CareerSubscription { get; set; }
+        public bool? CareerSubscription { get; set; }
+
+        
     }
 }

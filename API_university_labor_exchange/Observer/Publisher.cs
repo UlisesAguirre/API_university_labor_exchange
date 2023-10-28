@@ -47,6 +47,37 @@ namespace API_university_labor_exchange.Observer
             }
         }
 
+        public void Notify(int idCareer)
+        {
+
+                Student student = _context.Students.FirstOrDefault(s => s.Legajo == studentDTO.Legajo);
+
+            var suscribers = students
+                .Where(s => s.CareerSubscription == true)
+                .Where(s => s.IdCareer == idCareer)
+                .ToList(); ;
+
+            List<UpdateStudentDTO> suscribersDTO = _mapper.Map<List<UpdateStudentDTO>>(suscribers);
+
+            foreach (var suscriber in suscribersDTO)
+            {
+                suscriber.Update();
+            }
+
+            foreach (var updatedSuscriber in suscribersDTO)
+            {
+                var existingStudent = _context.Students
+                    .FirstOrDefault( s => s.Legajo == updatedSuscriber.Legajo);
+
+                if (existingStudent != null)
+                {
+                    _mapper.Map(updatedSuscriber, existingStudent);
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
         //public void Notify(int idCareer)
         //{
 
