@@ -67,20 +67,10 @@ namespace API_university_labor_exchange.Services.Implementations
             User userData = _userRepository.GetUserById(id);
             Student studentData = _studentRepository.GetStudent(id);
 
-            if (studentData.IdCareer == null)
-            {
-                return null;
-            }
-
-            int idCareer = studentData.IdCareer.Value;
-
-            Career studentCareer = _careerRepository.GetCareerBy(idCareer);
-
             ReadProfileStudentDTO studentProfile = _mapper.Map<ReadProfileStudentDTO>(studentData);
 
             studentProfile.Email = userData.Email;
             studentProfile.Username = userData.Username;
-            studentProfile.CareerName = studentCareer.Name;
 
 
             foreach (int idSkill in studentProfile.StudentsSkills.Select(s => s.IdSkill))
@@ -95,6 +85,18 @@ namespace API_university_labor_exchange.Services.Implementations
             studentData.CareerNotification = 0;
 
             _studentRepository.SaveChanges();
+
+
+            if (studentData.IdCareer == null)
+            {
+                return studentProfile;
+            }
+
+            int idCareer = studentData.IdCareer.Value;
+
+            Career studentCareer = _careerRepository.GetCareerBy(idCareer);
+            studentProfile.CareerName = studentCareer.Name;
+
             return studentProfile;
         }
 

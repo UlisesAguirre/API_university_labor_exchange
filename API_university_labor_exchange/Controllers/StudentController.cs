@@ -97,8 +97,8 @@ namespace API_university_labor_exchange.Controllers
         [Authorize(Roles = "student")]
         public ActionResult UpdateStudent([FromBody] UpdateStudentDTO student)
         {
-            //try
-            //{
+            try
+            {
                 var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (!int.TryParse(userIdClaim, out int userId))
                     return Unauthorized("Usted no esta autorizado");
@@ -114,11 +114,11 @@ namespace API_university_labor_exchange.Controllers
                 _studentService.UpdateSkills(skills, userId);
 
                 return Ok(skills);
-            //}
-            //catch (Exception)
-            //{
-            //    return BadRequest("Error al actualizar los datos del estudiante");
-            //}
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error al actualizar los datos del estudiante");
+            }
 
 
         }
@@ -185,8 +185,8 @@ namespace API_university_labor_exchange.Controllers
                     return Forbid("Acceso prohibido");
 
                 _studentService.DeleteCurriculum(studentId);
-                    return Ok("curriculum eliminado con exito");
-                
+                return Ok("curriculum eliminado con exito");
+
             }
             catch (Exception ex)
             {
