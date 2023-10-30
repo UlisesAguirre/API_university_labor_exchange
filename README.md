@@ -41,8 +41,8 @@ El proyecto está desarrollado en .NET, utilizando entity framework para una int
 - Control de acceso en cada endpoint en función del tipo de usuario.
 - Utiliza el patrón de diseño Observer para el envío de notificaciones.
 
-### Users data:
-to test the different screens the users are the following
+### Datos de usuarios:
+Para probar las distintas funcionalidades del proyecto, se brindan los siguientes usuarios
 
 Admin: `admin@gmail.com`
 password: `Admin123`
