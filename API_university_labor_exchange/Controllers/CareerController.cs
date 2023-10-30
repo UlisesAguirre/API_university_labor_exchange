@@ -38,16 +38,6 @@ namespace API_university_labor_exchange.Controllers
         }
 
 
-        //[HttpGet("GetCareer")]
-        //public ActionResult<ReadCareerDTO> GetCareer(int careerId)
-        //{
-        //    var career = _careerService.GetCareerById(careerId);
-        //    if (career == null)
-        //        return NotFound();
-        //    return Ok(career);
-
-        //}
-
         [HttpPost("CreateCareer")]
         [Authorize(Roles = "admin")]
         public ActionResult AddCareer(CreateCareerDTO career)

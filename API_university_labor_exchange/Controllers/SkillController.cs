@@ -40,22 +40,6 @@ namespace API_university_labor_exchange.Controllers
         }
 
 
-        //[HttpGet("GetSkill")]
-        //public ActionResult<ReadSkillDTO> GetSkill(int skillId)
-        //{
-        //    try
-        //    {
-        //        var skill = _skillService.GetSkill(skillId);
-        //        if (skill == null)
-        //            return NotFound("Habilidades no encontradas");
-        //        return Ok(skill);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return BadRequest("Error al acceder a los datos de las habilidades");
-        //    }
-        //}
-
         [HttpPost("CreateSkill")]
         [Authorize(Roles = "admin")]
         public ActionResult AddSkill(CreateSkillDTO skill)
