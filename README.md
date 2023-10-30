@@ -3,6 +3,12 @@
 El proyecto consiste en un sistema en el que los estudiantes de la universidad tecnológica nacional puedan presentar sus solicitudes para pasantías y empleos que estén relacionados directamente con sus áreas de estudio y habilidades. 
 A su vez, ofrece a las empresas la posibilidad de ingresar sus ofertas laborales y seleccionar de entre los aspirantes quienes se han postulado para el cargo. 
 
+### Link deploy:
+
+https://amazing-axolotl-5d86cd.netlify.app/
+
+![QR-Deploy](deploy-qr.png)
+
 ### Tecnologías utilizadas:
 El proyecto está desarrollado en .NET, utilizando entity framework para una interacción simplificada con la base de datos SQL SERVER.
 .
@@ -34,3 +40,15 @@ El proyecto está desarrollado en .NET, utilizando entity framework para una int
 - Implementa autenticación y almacenamiento mediante tokens JWT.
 - Control de acceso en cada endpoint en función del tipo de usuario.
 - Utiliza el patrón de diseño Observer para el envío de notificaciones.
+
+### Users data:
+to test the different screens the users are the following
+
+Admin: `admin@gmail.com`
+password: `Admin123`
+
+Student: `student1@gmail.com`
+password: `Student123`
+
+Company: `company1@gmail.com`
+password: `Company123`
